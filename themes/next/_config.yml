@@ -153,7 +153,7 @@ links_layout: block
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-avatar: https://avatars2.githubusercontent.com/u/10840522?s=40&v=4
+avatar: /images/128x128.jpg
 
 # Table Of Contents in the Sidebar
 toc:
