@@ -1,0 +1,38 @@
+language: node_js
+node_js: stable
+
+cache:
+  apt: true
+  yarn: true
+  directories:
+    - node_modules
+
+before_install:
+  - npm install -g hexo-cli
+
+install:
+  - npm install
+  - npm install hexo-deployer-git --save
+
+script:
+  - hexo clean
+  - hexo generate
+
+branches:
+  only:
+    - source
+
+# GitHub Pages 部署
+deploy:
+  provider: pages
+  skip_cleanup: true
+  keep-history: false
+  github_token: $GITHUB_TOKEN
+  local_dir: public
+  fqdn: $CUSTOM_DOMAIN
+  name: $GIT_NAME
+  email: $GIT_EMAIL
+  verbose: true
+  target-branch: master
+  on:
+    branch: source
