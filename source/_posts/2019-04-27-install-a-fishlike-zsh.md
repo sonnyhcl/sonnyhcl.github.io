@@ -1,5 +1,5 @@
 ---
-title: install-a-fishlike-zsh
+title: 教你如何把zsh变身为fishy-zsh
 date: 2019-04-27 00:46:50
 categories:
 - 技术笔记
@@ -9,8 +9,9 @@ tags:
 - "oh-my-zsh"
 ---
 
-# 伪装成fish的oh-my-zsh安装笔记
 都说普通青年用bash，装逼青年用zsh，文艺青年用fish。
+
+fish是真的好用，但是它最大的问题是与bash不兼容，从而带来各种各样兼容性问题，折腾过fish的人都知道。而zsh有着可定制化的oh-my-zsh框架，同时又是兼容bash语法的，笔者这里就要演示一下如何安装一个fishy-zsh。
 
 <!-- more -->
 
@@ -27,25 +28,26 @@ sudo apt-get install zsh curl git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
-## 自定义`.zshrc`
-- zsh主题选择`fishy`,模仿fish特有的路径简写模式
-```
-ZSH_THEME="fishy"
-```
+## 自定义.zshrc
+- zsh主题选择`fishy`，模仿了fish特有的路径简写模式。
+
+    ```
+    ZSH_THEME="fishy"
+    ```
 - 插件清单
 
-```
-plugins=(
-        git
-        zsh-autosuggestions
-        zsh-syntax-highlighting
-        z
-        cp
-        command-not-found
-        colored-man-pages
-        extract
-)
-```
+    ```
+    plugins=(
+            git
+            zsh-autosuggestions
+            zsh-syntax-highlighting
+            z
+            cp
+            command-not-found
+            colored-man-pages
+            extract
+    )
+    ```
 
 - git
     - oh-my-zsh自带且默认开启的插件，提示当前目录所在git仓库的状态的插件
