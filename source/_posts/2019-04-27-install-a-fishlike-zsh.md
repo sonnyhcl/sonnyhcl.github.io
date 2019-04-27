@@ -62,7 +62,12 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 ```
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 ```
-- [z](https://github.com/robbyrussell/oh-my-zsh/wiki/Plugins-Overview#fs-jumping): 可以无脑跳跃到历史记录中出现过的文件夹
-- command-not-found：会自动根据出错的命令，推荐该命令可能相关的包
-- colored-man-pages： 给man page自动高亮，命令行神器
-- extract： 只需要一个`x`就可以解压任何压缩包，再也不需要手打`tar xfvz`
+- [z](https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/z): 可以无脑跳跃到历史记录中出现过的文件夹
+- [command-not-found](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/command-not-found)：会自动根据出错的命令，推荐该命令可能相关的包
+- [colored-man-pages](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/colored-man-pages)： 给man page自动高亮，命令行神器
+- [extract](https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/extract)： 只需要一个`x`就可以解压任何压缩包，再也不需要手打`tar xfvz`
+
+## 最终效果
+配置完成之后的效果如下图所示
+
+[zsh](zsh.png)

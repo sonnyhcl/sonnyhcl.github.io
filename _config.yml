@@ -5,7 +5,7 @@
 # Site
 title: 胡一刀的随笔
 subtitle: May the force be with you
-description: 随想随写
+description: 分享技术
 keywords: 博客
 author: sonnyhcl
 language: zh-CN
@@ -79,7 +79,8 @@ theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
-#deploy:
-  #type: github
-  #repository: git@github.com:sonnyhcl/sonnyhcl.github.io.git
-  #branch: master
+deploy:
+  type: git
+  repository: git@github.com:sonnyhcl/sonnyhcl.github.io.git
+  branch: master
+  message: update https://sonnyhcl.top using hexo deploy
