@@ -984,7 +984,7 @@ motion:
 # Choose only one variant, do not need to install both.
 # To install 2.x: https://github.com/theme-next/theme-next-fancybox
 # To install 3.x: https://github.com/theme-next/theme-next-fancybox3
-fancybox: true
+fancybox: false
 
 # Polyfill to remove click delays on browsers with touch UIs.
 # Dependencies: https://github.com/theme-next/theme-next-fastclick
@@ -1007,7 +1007,7 @@ pace_theme: pace-theme-minimal
 # Dependencies: https://github.com/theme-next/theme-next-canvas-nest
 canvas_nest:
   enable: true
-  onmobile: false # display on mobile or not
+  onmobile: true # display on mobile or not
   color: "0,0,255" # RGB values, use ',' to separate
   opacity: 0.5 # the opacity of line: 0~1
   zIndex: -1 # z-index property of the background
