@@ -1092,6 +1092,11 @@ hexo-server@^0.3.3:
     opn "^5.3.0"
     serve-static "^1.13.2"
 
+hexo-symbols-count-time@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.npm.taobao.org/hexo-symbols-count-time/download/hexo-symbols-count-time-0.4.4.tgz#c5bad76d445d7e0a1ee8a46c7ad23349bc162c1d"
+  integrity sha1-xbrXbURdfgoe6KRsetIzSbwWLB0=
+
 hexo-util@^0.6.0, hexo-util@^0.6.2, hexo-util@^0.6.3:
   version "0.6.3"
   resolved "http://registry.npm.taobao.org/hexo-util/download/hexo-util-0.6.3.tgz#16a2ade457bef955af0dfd22a3fe6f0a49a9137c"
@@ -1106,7 +1111,7 @@ hexo-util@^0.6.0, hexo-util@^0.6.2, hexo-util@^0.6.3:
 
 hexo-wordcount@^6.0.1:
   version "6.0.1"
-  resolved "http://registry.npm.taobao.org/hexo-wordcount/download/hexo-wordcount-6.0.1.tgz#5a60efc9d3c8e421956f2fd6683ca94a8a795264"
+  resolved "https://registry.npm.taobao.org/hexo-wordcount/download/hexo-wordcount-6.0.1.tgz#5a60efc9d3c8e421956f2fd6683ca94a8a795264"
   integrity sha1-WmDvydPI5CGVby/WaDypSop5UmQ=
 
 hexo@^3.8.0:
