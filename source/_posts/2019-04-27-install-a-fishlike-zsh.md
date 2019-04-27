@@ -30,6 +30,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ## 自定义你的[.zshrc](zshrc)
 > 安装完oh-my-zsh的下一步就是自定义配置文件，下面罗列了一些模仿fish必备的插件
 
+### fishy主题
 - zsh主题选择`fishy`，可以模仿fish特有的路径简写模式。
 
 ```
@@ -70,4 +71,4 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 ## 最终效果
 配置完成之后的效果如下图所示
 
-[zsh](zsh.png)
+![zsh](zsh.png)

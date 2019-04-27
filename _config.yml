@@ -74,6 +74,13 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 Plugins: hexo-generate-feed
+
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+
 ## Themes: https://hexo.io/themes/
 theme: next
 

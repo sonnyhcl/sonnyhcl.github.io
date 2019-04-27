@@ -58,11 +58,11 @@ footer:
   icon:
     # Icon name in fontawesome, see: https://fontawesome.com/v4.7.0/icons/
     # `heart` is recommended with animation in red (#ff0000).
-    name: user
+    name: heart
     # If you want to animate the icon, set it to true.
-    animated: false
+    animated: true
     # Change the color of icon, using Hex Code.
-    color: "#808080"
+    color: "#ff0000"
 
   # If not defined, `author` from Hexo main config will be used.
   copyright:
@@ -95,7 +95,7 @@ footer:
 # CC licenses are available in 39 languages, where you can find the specific and correct abbreviation you need.
 # Valid values of language: deed.zh, deed.fr, deed.de, etc.
 creative_commons:
-  license: by-nc-sa
+  license: by-nc-nd
   sidebar: true
   post: true
   language: deed.zh
@@ -340,15 +340,6 @@ symbols_count_time:
   item_text_total: true
   awl: 4
   wpm: 275
-
-# Post wordcount display settings
-# Dependencies: https://github.com/willin/hexo-wordcount
-post_wordcount:
-  item_text: true
-  wordcount: true
-  min2read: true
-  totalcount: true
-  separated_meta: true
 
 codeblock:
   # Manual define the border radius in codeblock, leave it blank for the default value: 1
