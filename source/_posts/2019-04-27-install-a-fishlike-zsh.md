@@ -2,7 +2,7 @@
 title: oh-my-fishy-zsh配置
 date: 2019-04-27 00:46:50
 categories:
-- 技术笔记
+- Tech
 tags: 
 - "zsh"
 - "fish"
@@ -44,6 +44,7 @@ plugins=(
         git
         zsh-autosuggestions
         zsh-syntax-highlighting
+        zsh-completions
         z
         command-not-found
         colored-man-pages
@@ -63,6 +64,13 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 ```
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 ```
+
+- [zsh-completions](https://github.com/zsh-users/zsh-completions): 自动命令补全，类似bash-completions功能的插件
+
+```
+git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions
+```
+
 - [z](https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/z): 可以无脑跳跃到历史记录中出现过的文件夹
 - [command-not-found](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/command-not-found)：会自动根据出错的命令，推荐该命令可能相关的包
 - [colored-man-pages](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/colored-man-pages)： 给man page自动高亮，命令行神器

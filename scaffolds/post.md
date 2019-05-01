@@ -1,5 +1,8 @@
 ---
 title: {{ title }}
 date: {{ date }}
-tags: Tech
+categories:
+- 技术笔记
+tags: 
+- "Tech"
 ---

@@ -16,8 +16,6 @@ timezone: Asia/Shanghai
 url: https://sonnyhcl.top/
 root: /
 permalink: :title/
-permalink_defaults:
-  lang": en
 
 # Directory
 source_dir: source
@@ -55,7 +53,7 @@ index_generator:
   order_by: -date
   
 # Category & Tag
-default_category: uncategorized
+default_category: Tech
 category_map:
 tag_map:
 
