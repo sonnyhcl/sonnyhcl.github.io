@@ -46,6 +46,7 @@ plugins=(
         zsh-syntax-highlighting
         zsh-completions
         z
+        history-substring-search
         command-not-found
         colored-man-pages
         extract
@@ -69,6 +70,10 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 
 ```
 git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions
+```
+- [history-substring-search](https://github.com/zsh-users/zsh-history-substring-search): 按住向上箭头可以搜索出现过该关键字的历史命令
+```
+git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
 ```
 
 - [z](https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins/z): 可以无脑跳跃到历史记录中出现过的文件夹
