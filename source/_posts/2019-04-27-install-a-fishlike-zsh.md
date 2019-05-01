@@ -16,6 +16,38 @@ fish是真的好用，但是它最大的问题是与bash不兼容，从而带来
 <!-- more -->
 
 ## 前置环境安装
+### 环境参数
+```console
+clhu@t5 ~> uname -a
+Linux t5 4.15.0-48-generic #51~16.04.1-Ubuntu SMP Fri Apr 5 12:01:12 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+clhu@t5 ~> lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 16.04.6 LTS
+Release:	16.04
+Codename:	xenial
+clhu@t5 ~> screenfetch                                                     
+                          ./+o+-       clhu@t5
+                  yyyyy- -yyyyyy+      OS: Ubuntu 16.04 xenial
+               ://+//////-yyyyyyo      Kernel: x86_64 Linux 4.15.0-48-generic
+           .++ .:/++++++/-.+sss/`      Uptime: 23h 49m
+         .:++o:  /++++++++/:--:/-      Packages: 3856
+        o:+o+:++.`..```.-/oo+++++/     Shell: zsh 5.1.1
+       .:+o:+o/.          `+sssoo+/    Resolution: 3840x1080
+  .++/+:+oo+o:`             /sssooo.   DE: Gnome 
+ /+++//+:`oo+o               /::--:.   WM: GNOME Shell
+ \+/+o+++`o++o               ++////.   WM Theme: Adwaita
+  .++.o+++oo+:`             /dddhhh.   GTK Theme: Numix Daily [GTK2/3]
+       .+.o+oo:.          `oddhhhh+    Icon Theme: Adwaita
+        \+.++o+o``-````.:ohdhhhhh+     Font: Cantarell 11
+         `:o+++ `ohhhhhhhhyo++os:      CPU: Intel Core i7-6700HQ CPU @ 3.5GHz
+           .o:`.syhhhhhhh/.oo++o`      GPU: GeForce GTX 960M
+               /osyyyyyyo++ooo+++/     RAM: 7488MiB / 15930MiB
+                   ````` +oo+++o\:    
+                          `oo++.      
+```
+
+### 安装zsh
 ```
 sudo apt-get install zsh curl git
 ```
@@ -38,7 +70,6 @@ ZSH_THEME="fishy"
 ```
 
 ### 插件清单
-
 ```
 plugins=(
         git
