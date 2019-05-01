@@ -2,7 +2,7 @@
 title: 使用树莓派搭建无线打印机
 date: 2019-05-01 19:10:41
 categories:
-- 技术笔记
+- Tech
 tags: 
 - "Raspberry"
 - "RPI"

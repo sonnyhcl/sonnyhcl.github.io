@@ -81,11 +81,3 @@ symbols_count_time:
 
 ## Themes: https://hexo.io/themes/
 theme: next
-
-# Deployment
-## Docs: https://hexo.io/docs/deployment.html
-deploy:
-  type: git
-  repository: git@github.com:sonnyhcl/sonnyhcl.github.io.git
-  branch: master
-  message: update https://sonnyhcl.top using hexo deploy
