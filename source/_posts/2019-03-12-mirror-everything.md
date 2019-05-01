@@ -21,7 +21,7 @@ tags:
 - 清华：https://pypi.tuna.tsinghua.edu.cn/simple
 
 临时使用只需要在后面加上一行参数
-```shell
+```
 pip install flask -i https://pypi.tuna.tsinghua.edu.cn/simple   
 ```
 如果想要一劳永逸的话
@@ -36,7 +36,7 @@ disable-pip-version-check = true
 timeout = 6000    
 ```
 ## npm mirror
-```shell
+```
 npm config set registry https://registry.npm.taobao.org
 ```
 ## docker mirror
