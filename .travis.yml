@@ -8,10 +8,10 @@ cache:
     - node_modules
 
 before_install:
-  - npm install -g hexo-cli
+  - yarn global add hexo-cli
 
 install:
-  - npm install
+  - yarn install
 
 script:
   - hexo clean
