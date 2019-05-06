@@ -71,7 +71,7 @@ users:
     ssh_pwauth: true
     chpasswd: { expire: false }
     ssh-authorized-keys:
-      - ssh-rsa AAAA....NN   # insert your SSH public key ~/.ssh/id_rsa.pub here
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmU0KQcntkCUk4W61JjmGPVKo9+z2wDYjSKoVzLqGNG  
 
 package_upgrade: false
 
@@ -84,7 +84,7 @@ write_files:
 
       # static IP configuration:
       interface eth0
-      static ip_address=10.xxx.245.130/23
+      static ip_address=10.xxx.245.106/23
       static routers=10.xxx.244.1
       static domain_name_servers=202.120.224.6
 
@@ -124,7 +124,7 @@ $
 > 接下来在树莓派上进行操作
 
 ### 树莓派镜像源配置
-在安装软件包之前，首先需要配置一下对应的镜像源，这里主要[参考tuna的镜像源配置方法](https://mirrors.tuna.tsinghua.edu.cn/help/raspbian/)。
+在安装软件包之前，首先需要配置一下对应的镜像源，这里主要[参考tuna的镜像源配置方法](https://mirrors.tuna.tsinghua.edu.cn/help/raspbian/)，意外惊喜是该镜像源可以直接走v6 :)。
 
 - 编辑 `/etc/apt/sources.list` 文件，删除原文件所有内容，用以下内容取代：
 
@@ -137,13 +137,20 @@ deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main non-
 ```
 deb http://mirrors.tuna.tsinghua.edu.cn/raspberrypi/ stretch main
 ```
+- 更新镜像源
 
-### 树莓派安装CUPS
 ```
 sudo apt update
+```
+### 树莓派安装CUPS
+```
+# 安装cups
 sudo apt install cups
+# 启动cups服务
 sudo service cups start
+# 将当前pirate用户添加进lpadmin用户组，这样才有权限管理631端口的打印机页面
 sudo usermod -a -G lpadmin pirate
+# 设置允许远程控制
 sudo cupsctl --remote-any
 ```
 
