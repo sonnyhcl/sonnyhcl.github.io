@@ -36,18 +36,6 @@ sdb                  8:16   0   477G  0 disk
 sudo pvcreate /dev/sda1
 sudo pvcreate /dev/sdb6
 ```
-```bash
-clhu@G7:~$ sudo pvs -a
-  PV           VG Fmt  Attr PSize    PFree
-  /dev/g7/data         ---        0     0 
-  /dev/sda1    g7 lvm2 a--  <931.51g    0 
-  /dev/sdb1            ---        0     0 
-  /dev/sdb2            ---        0     0 
-  /dev/sdb3            ---        0     0 
-  /dev/sdb4            ---        0     0 
-  /dev/sdb5            ---        0     0 
-  /dev/sdb6    g7 lvm2 a--  <282.44g 1.85g
-```
 
 ### 添加卷组g7
 ```bash
@@ -105,7 +93,7 @@ clhu@G7:~$ sudo lvs -a
 ```
 
 ### 格式化
-此时`/dev/mapper/g7-data`可以视作一块未格式化的新盘，下面开始格式化
+此时`g7/data`在系统中被映射为`/dev/mapper/g7-data`，它可以被视作一块未格式化的新盘，下面开始格式化
 ```bash
 sudo mkfs.ext4 /dev/mapper/g7-data
 ```
@@ -143,7 +131,7 @@ UUID=dface50d-26c6-49c3-8f36-197cd82ba1af /home           ext4    defaults      
 # swap was on /dev/sdb3 during installation
 UUID=16dfe6ed-0da5-4308-94d9-0cb2730700e5 none            swap    sw              0       0
 
-/dev/mapper/g7-data /var ext4 defaults 0 0
+/dev/mapper/g7-data   /var  ext4  defaults  0   0
 ```
 
 ### 挂载var到新盘上
@@ -152,7 +140,9 @@ sudo mv /var /var_old
 sudo mkdir /var
 sudo mount /var
 ```
-此时新盘应该就已经挂载好了/var
+
+此时新盘应该已经挂载好了/var
+
 ```bash
 clhu@G7:~$ mount
 sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
@@ -194,27 +184,15 @@ tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,size=3263492k,mode=
 gvfsd-fuse on /run/user/1000/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
 ```
 
-### 重启检验一下
+### 重启
 ```bash
+# 尝试一下mount fstab
+sudo mount
+# 重启才是硬道理
 sudo reboot
 ```
 
 ## 最终成果
-```bash
-clhu@G7:~$ df -hT
-Filesystem          Type      Size  Used Avail Use% Mounted on
-udev                devtmpfs   16G     0   16G   0% /dev
-tmpfs               tmpfs     3.2G  1.7M  3.2G   1% /run
-/dev/sdb5           ext4       59G  5.7G   51G  11% /
-tmpfs               tmpfs      16G     0   16G   0% /dev/shm
-tmpfs               tmpfs     5.0M  4.0K  5.0M   1% /run/lock
-tmpfs               tmpfs      16G     0   16G   0% /sys/fs/cgroup
-/dev/sdb2           ext4      2.0G  168M  1.7G  10% /boot
-/dev/sdb4           ext4       98G   92M   93G   1% /home
-/dev/sdb1           vfat      511M  6.1M  505M   2% /boot/efi
-/dev/mapper/g7-data ext4      916G  1.1G  869G   1% /var
-tmpfs               tmpfs     3.2G   12K  3.2G   1% /run/user/1000
-```
 ```bash
 clhu@G7:~$ df -hT
 Filesystem          Type      Size  Used Avail Use% Mounted on
