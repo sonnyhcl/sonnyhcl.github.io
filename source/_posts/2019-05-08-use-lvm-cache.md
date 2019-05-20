@@ -40,7 +40,7 @@ sudo pvcreate /dev/sdb6
 ### 添加卷组g7
 ```bash
 sudo vgcreate g7 /dev/sda1
-sudo vgcreate g7 /dev/sdb6
+sudo vgextend g7 /dev/sdb6
 ```
 ### 创建逻辑卷
 data为存储卷，cache为缓存卷，meta为缓冲卷索引，其中cache:meta不能大于1000:1，meta最小为8M。最后要注意的是，不要分配完pv内所有空间，要留一点给lvm创建自己的元数据索引。
