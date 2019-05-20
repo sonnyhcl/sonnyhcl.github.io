@@ -47,7 +47,7 @@ data为存储卷，cache为缓存卷，meta为缓冲卷索引，其中cache:meta
 ```bash
 sudo lvcreate -l 100%FREE -n data g7 /dev/sda1
 sudo lvcreate -L 280G -n cache g7 /dev/sdb6
-sudo lvcreate -l 300M -n meta g7 /dev/sdb6
+sudo lvcreate -L 300M -n meta g7 /dev/sdb6
 ```
 
 ### 创建缓存池
@@ -102,7 +102,9 @@ sudo mkfs.ext4 /dev/mapper/g7-data
 
 ### 备份/var内容到新盘中
 ```bash
+# 挂载g7-data
 sudo mkdir -p /mnt/data
+sudo mount /dev/mapper/g7-data /mnt/data
 # 带属性拷贝
 sudo rsync -avHPSAX /var/ /mnt/data/
 # 检查
