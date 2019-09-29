@@ -8,17 +8,16 @@ tags:
   - SSD
 date: 2019-05-08 19:34:25
 ---
-在SSD+HDD的混合硬盘配置中，SSD容量小但是速度快，HDD容量大但是延迟高。这篇文章介绍的是利用SSD给HDD做LVM Cache加速,达到整体访问速度与容量的一个平衡。
+这篇文章介绍的是利用SSD给HDD做LVM Cache加速，SSD容量小但是速度快，HDD容量大但是延迟高，我们可以利用一个小SSD给HDD缓存加速访问速度。
 
 <!-- more -->
 
 ## LVM存储池
-- 系统已安装好并分好区，原/var已挂载并有数据
+- 系统已安装好并分好区如下所示，/var已挂载并有数据
+- sda为HDD，sdb为SSD
 - SSD上除了已分配的系统root、home之外，还有少量空间富裕
 - HDD大容量硬盘做数据盘挂载到/var上，SSD富裕部分做Cache
 
-### 初始硬盘状态
-sda为HDD，sdb为SSD
 ```bash
 clhu@G7:~$ lsblk
 NAME               MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT

@@ -26,25 +26,6 @@ Distributor ID:	Ubuntu
 Description:	Ubuntu 16.04.6 LTS
 Release:	16.04
 Codename:	xenial
-clhu@t5 ~> screenfetch                                                     
-                          ./+o+-       clhu@t5
-                  yyyyy- -yyyyyy+      OS: Ubuntu 16.04 xenial
-               ://+//////-yyyyyyo      Kernel: x86_64 Linux 4.15.0-48-generic
-           .++ .:/++++++/-.+sss/`      Uptime: 23h 49m
-         .:++o:  /++++++++/:--:/-      Packages: 3856
-        o:+o+:++.`..```.-/oo+++++/     Shell: zsh 5.1.1
-       .:+o:+o/.          `+sssoo+/    Resolution: 3840x1080
-  .++/+:+oo+o:`             /sssooo.   DE: Gnome 
- /+++//+:`oo+o               /::--:.   WM: GNOME Shell
- \+/+o+++`o++o               ++////.   WM Theme: Adwaita
-  .++.o+++oo+:`             /dddhhh.   GTK Theme: Numix Daily [GTK2/3]
-       .+.o+oo:.          `oddhhhh+    Icon Theme: Adwaita
-        \+.++o+o``-````.:ohdhhhhh+     Font: Cantarell 11
-         `:o+++ `ohhhhhhhhyo++os:      CPU: Intel Core i7-6700HQ CPU @ 3.5GHz
-           .o:`.syhhhhhhh/.oo++o`      GPU: GeForce GTX 960M
-               /osyyyyyyo++ooo+++/     RAM: 7488MiB / 15930MiB
-                   ````` +oo+++o\:    
-                          `oo++.      
 ```
 
 ### 安装zsh

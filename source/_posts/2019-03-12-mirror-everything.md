@@ -35,20 +35,25 @@ trusted-host=pypi.tuna.tsinghua.edu.cn
 disable-pip-version-check = true  
 timeout = 6000    
 ```
+
 ## npm mirror
 ```
 npm config set registry https://registry.npm.taobao.org
 ```
-## docker mirror
 
-这是阿里云为个人开发者提供的docker镜像源，大家可以自己去申请自己的专属地址，具体步骤请查看[这里](https://yq.aliyun.com/articles/29941)
+## docker mirror
 > `/etc/docker/daemon.json`
 
 ```json
 {
-    "registry-mirrors": ["https://mctqfwyu.mirror.aliyuncs.com"]
+    "registry-mirrors": [
+        "https://docker.mirrors.ustc.edu.cn",
+        "https://quay.mirrors.ustc.edu.cn",
+        "https://gcr.mirrors.ustc.edu.cn"
+    ]
 }
 ```
+
 ## maven mirror
 修改maven根目录下的conf文件夹中的setting.xml文件
 > `/home/whoami/.m2/settings.xml`
