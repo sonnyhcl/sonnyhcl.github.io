@@ -18,69 +18,69 @@ date: 2019-10-17 11:16:43
 
 ###  安装NTP
 
-    ```console
-    sudo apt install ntp
-    ```
+```console
+sudo apt install ntp
+```
     
 ###  修改ntp server虚拟主机的配置文件
 
-    ```console
-    sudo vim /etc/ntp.conf
-    -----------------------
-    restrict -4 default notrap nomodify nopeer
-    restrict -6 default notrap nomodify nopeer
+```console
+sudo vim /etc/ntp.conf
+-----------------------
+restrict -4 default notrap nomodify nopeer
+restrict -6 default notrap nomodify nopeer
 
-    restrict 127.0.0.1
-    restrict ::1
+restrict 127.0.0.1
+restrict ::1
 
-    driftfile /var/lib/ntp/drift/ntp.drift # path for drift file
+driftfile /var/lib/ntp/drift/ntp.drift # path for drift file
 
-    logfile   /var/log/ntp		# alternate log file
-    logconfig =syncall +clockall +sysevents
+logfile   /var/log/ntp		# alternate log file
+logconfig =syncall +clockall +sysevents
 
-    keys /etc/ntp.keys		# path for keys file
-    trustedkey 1			# define trusted keys
-    requestkey 1			# key (7) for accessing server variables
-    controlkey 1			# key (6) for accessing server variables
+keys /etc/ntp.keys		# path for keys file
+trustedkey 1			# define trusted keys
+requestkey 1			# key (7) for accessing server variables
+controlkey 1			# key (6) for accessing server variables
 
-    restrict 0.cn.pool.ntp.org notrap nomodify noquery
-    pool 0.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
-    restrict 1.cn.pool.ntp.org notrap nomodify noquery
-    pool 1.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
-    restrict 2.cn.pool.ntp.org notrap nomodify noquery
-    pool 2.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
-    restrict 3.cn.pool.ntp.org notrap nomodify noquery
-    pool 3.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+restrict 0.cn.pool.ntp.org notrap nomodify noquery
+pool 0.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+restrict 1.cn.pool.ntp.org notrap nomodify noquery
+pool 1.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+restrict 2.cn.pool.ntp.org notrap nomodify noquery
+pool 2.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+restrict 3.cn.pool.ntp.org notrap nomodify noquery
+pool 3.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
 
-    server ntp.fudan.edu.cn iburst minpoll 4 maxpoll 7
-    server time1.google.com iburst minpoll 4 maxpoll 7
-    server time2.google.com iburst minpoll 4 maxpoll 7
-    server time3.google.com iburst minpoll 4 maxpoll 7
-    server time4.google.com iburst minpoll 4 maxpoll 7
-    -----------------------
-    ```
+server ntp.fudan.edu.cn iburst minpoll 4 maxpoll 7
+server time1.google.com iburst minpoll 4 maxpoll 7
+server time2.google.com iburst minpoll 4 maxpoll 7
+server time3.google.com iburst minpoll 4 maxpoll 7
+server time4.google.com iburst minpoll 4 maxpoll 7
+-----------------------
+```
 
 ###  配置ntp服务
 
-    ```console
-    sudo systemctl enable ntp.service
-    sudo systemctl start ntp.service
-    # or
-    sudo systemctl restart ntp.service
-    ```
+```console
+sudo systemctl enable ntp.service
+sudo systemctl start ntp.service
+# or
+sudo systemctl restart ntp.service
+```
 
 ###  查看NTP时间对准情况
 
-    > 重点关注offset和jitter两个参数,一般小于0.1就算校准了
+> 重点关注offset和jitter两个参数,一般小于0.1就算校准了
 
-    ```console
-    watch -n 1 ntpq -pn
-    -----------------------
-    remote           refid              st  t   when poll   reach   delay   offset  jitter
-    ======================================================================================
-    *ntp.sonnyhcl. 23.71.59.65        3   u   18   32     377     0.364   -0.250   0.043
-    ----------------------
-    ```
+```console
+watch -n 1 ntpq -pn
+-----------------------
+remote           refid              st  t   when poll   reach   delay   offset  jitter
+======================================================================================
+*ntp.sonnyhcl. 23.71.59.65        3   u   18   32     377     0.364   -0.250   0.043
+----------------------
+```
 
 ## NTP客户端配置
 
