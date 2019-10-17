@@ -13,8 +13,7 @@ date: 2019-05-08 19:34:25
 <!-- more -->
 
 ## LVM存储池
-- 系统已安装好并分好区如下所示，/var已挂载并有数据
-- sda为HDD，sdb为SSD
+- 系统已安装好并分好区如下所示，其中sda为HDD，sdb为SSD
 - SSD上除了已分配的系统root、home之外，还有少量空间富裕
 - HDD大容量硬盘做数据盘挂载到/var上，SSD富裕部分做Cache
 
@@ -109,6 +108,7 @@ sudo apt install -y thin-provisioning-tools
 ## 挂载/var
 
 ### 拷贝/var到新盘中
+这一步是因为我们希望把数据盘挂载在｀/var｀上,需要迁移已有的/var上的数据,否则可以跳过这一步
 ```bash
 # 挂载g7-var
 sudo mkdir -p /mnt/var
