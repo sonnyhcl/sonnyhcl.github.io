@@ -1,5 +1,5 @@
 ---
-title: 本地云构建之NTP服务
+title: 搭建本地私有云之时钟对准NTP
 categories:
   - Tech
 tags:
