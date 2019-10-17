@@ -3,7 +3,8 @@ title: 搭建本地私有云之域控认证FreeIPA
 categories:
   - Tech
 tags:
-  - Tech
+  - on-premise-cloud
+  - FreeIPA
 date: 2019-10-17 11:29:04
 ---
 
@@ -60,17 +61,17 @@ $ sudo yum install -y ipa-server ipa-server-dns
 $ sudo ipa-server-install --allow-zone-overlap
 ```
 
-接下来要输入参数如下
-```
-- Do you want to configure integrated DNS (BIND)? [no]: yes
-- Server host name [ipa.sonnyhcl.top]: <Enter>
-- Please confirm the domain name [sonnyhcl.top]: <Enter>
-- Please provide a realm name [SONNYHCL.TOP]: <Enter>
-- Directory Manager password: <secure password>
-- Password (confirm): <secure password>
-- IPA admin password: <secure password>
-- Password (confirm): <secure password>
-```
+  接下来要输入参数如下
+  ```
+  - Do you want to configure integrated DNS (BIND)? [no]: yes
+  - Server host name [ipa.sonnyhcl.top]: <Enter>
+  - Please confirm the domain name [sonnyhcl.top]: <Enter>
+  - Please provide a realm name [SONNYHCL.TOP]: <Enter>
+  - Directory Manager password: <secure password>
+  - Password (confirm): <secure password>
+  - IPA admin password: <secure password>
+  - Password (confirm): <secure password>
+  ```
 
 6. 配置 authconfig
 ```

@@ -3,7 +3,8 @@ title: 搭建本地私有云之时钟对准NTP
 categories:
   - Tech
 tags:
-  - Tech
+  - on-premise-cloud
+  - ntp
 date: 2019-10-17 11:16:43
 ---
 
