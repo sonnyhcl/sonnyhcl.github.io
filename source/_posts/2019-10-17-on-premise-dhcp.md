@@ -52,12 +52,12 @@ sudo netplan --debug apply
 ```
 
 ## 安装步骤
-- 下载 dhcp 包
+### 下载 dhcp 包
 ```
 sudo apt install -y isc-dhcp-server
 ```
 
-- 配置 /etc/default/isc-dhcp-server
+### 配置 /etc/default/isc-dhcp-server
 ```
 # Defaults for isc-dhcp-server (sourced by /etc/init.d/isc-dhcp-server)
 
@@ -79,7 +79,7 @@ INTERFACESv4="ens3"
 INTERFACESv6=""
 ```
 
-- 配置 /etc/dhcp/dhcpd.conf
+### 配置 /etc/dhcp/dhcpd.conf
 ```
 # dhcpd.conf
 #
@@ -128,12 +128,12 @@ authoritative;
 log-facility local7;
 ```
 
-- 启动 dhcp
+### 启动 dhcp
 ```
 sudo systemctl enable isc-dhcp-server
 sudo systemctl restart isc-dhcp-server
 ```
-- 检查 dhcp 运行状况
+### 检查 dhcp 运行状况
 ```
 $ ip a s
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000

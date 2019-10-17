@@ -20,10 +20,10 @@ date: 2019-10-17 11:29:04
 
 FreeIPA官方目前对`RedHat~Centos~Fedora>Ubuntu~Debian`几家做的兼容性比较多,这里记录了Centos和Ubuntu上安装ipa server的过程。
 
-## Centos7 安装 FreeIPA Server
+# Centos7 安装 FreeIPA Server
 > Centos + 4vCPU + 4G
 
-### Profile
+## Profile
 -  ip: 192.168.128.121
 -  kerberos realm: SONNYHCL.TOP
 -  dns domain: sonnyhcl.top
@@ -31,21 +31,21 @@ FreeIPA官方目前对`RedHat~Centos~Fedora>Ubuntu~Debian`几家做的兼容性�
 -  with DNS: yes
 -  forwarder: 127.0.0.1, 202.120.224.6, 202.120.224.26
 
-### 步骤
-1. 配置机器名 hostname
+## 步骤
+### 配置机器名 hostname
 ```
 $ sudo hostnamectl set-hostname ipa.sonnyhcl.top
 $ hostname -f
 ipa.sonnyhcl.top
 ```
 
-2. 配置 /etc/hosts
+### 配置 /etc/hosts
 ```
 # <ip fqdn shortname>
 $ echo "192.168.128.121 ipa.sonnyhcl.top ipa" |  sudo tee -a /etc/hosts
 ```
 
-3. 配置随机数硬件加速
+### 配置随机数硬件加速
 ```
 $ sudo yum update -y
 $ sudo yum install rng-tools
@@ -53,12 +53,12 @@ $ sudo systemctl enable rngd
 $ sudo systemctl status rngd
 ```
 
-4. 下载 FreeIPA-Server
+### 下载 FreeIPA-Server
 ```
 $ sudo yum install -y ipa-server ipa-server-dns
 ```
 
-5. 配置 FreeIPA-Server
+### 配置 FreeIPA-Server
 ```
 $ sudo ipa-server-install --allow-zone-overlap
 ```
@@ -75,21 +75,21 @@ $ sudo ipa-server-install --allow-zone-overlap
   - Password (confirm): <secure password>
   ```
 
-6. 配置 authconfig
+### 配置 authconfig
 ```
 $ sudo authconfig --enablemkhomedir --update
 ```
 
-7. 开启防火墙
+### 开启防火墙
 ```
 $ sudo firewall-cmd --permanent --add-service={ntp,http,https,ldap,ldaps,kerberos,kpasswd,dns}
 $ sudo firewall-cmd --reload
 $ sudo firewall-cmd --list-all
 ```
 
-### 测试
+## 测试
 
-1. 测试 kerberos
+### 测试 kerberos
 ```
 $ kinit admin
 Password for admin@SONNYHCL.TOP:
@@ -101,7 +101,7 @@ Valid starting     Expires            Service principal
 06/29/18 22:52:40  06/30/18 22:52:36  krbtgt/SONNYHCL.TOP@SONNYHCL.TOP
 ```
 
-2. 测试 ipa
+### 测试 ipa
 ```
 $ ipa user-find admin
 --------------
@@ -133,21 +133,21 @@ ipa-dnskeysyncd Service: RUNNING
 ipa: INFO: The ipactl command was successful
 ```
 
-3. 测试 Web UI
+### 测试 Web UI
 
 如果在虚拟机中部署，在宿主机访问，请确保你的宿主机　hosts　里面也写入了第2步中的域名解析
 
 
 访问`https://ipa.sonnyhcl.top/ipa/ui`，选择　高级　->　继续访问　即可跳过浏览器对 https 证书的质疑。输入刚刚创建的`admin`账户密码即可进入 Web 管理界面。
 
-### 参考链接
+## 参考链接
 - [CentOS 7 安装 FreeIPA 主从复制](https://qizhanming.com/blog/2019/04/29/install-freeipa-server-and-replica-on-centos-7)
 - [https://computingforgeeks.com/how-to-install-and-configure-freeipa-server-on-ubuntu-18-04-ubuntu-16-04/](https://computingforgeeks.com/how-to-install-and-configure-freeipa-server-on-ubuntu-18-04-ubuntu-16-04/)
 
-## Ubuntu18 安装 FreeIPA Server
+# Ubuntu18 安装 FreeIPA Server
 > Ubuntu18 + 4vCPU + 4G
 
-### Profile
+## Profile
 -  ip: 192.168.128.121
 -  kerberos realm: SONNYHCL.TOP
 -  dns domain: sonnyhcl.top
@@ -155,21 +155,21 @@ ipa: INFO: The ipactl command was successful
 -  with DNS: yes
 -  forwarder: 127.0.0.1, 202.120.224.6, 202.120.224.26
 
-### 步骤
-1. 配置机器名 hostname
+## 步骤
+### 配置机器名 hostname
 ```
 $ sudo hostnamectl set-hostname ipa.sonnyhcl.top
 $ hostname -f
 ipa.sonnyhcl.top
 ```
 
-2. 配置 /etc/hosts
+### 配置 /etc/hosts
 ```
 # <ip fqdn shortname>
 $ echo "192.168.128.121 ipa.sonnyhcl.top ipa" |  sudo tee -a /etc/hosts
 ```
 
-3. 配置随机数硬件加速
+### 配置随机数硬件加速
 ```
 $ sudo apt update -y
 $ sudo apt install rng-tools
@@ -178,7 +178,7 @@ $ sudo systemctl enable rng-tools
 $ sudo systemctl start rng-tools
 ```
 
-4. 下载 FreeIPA-Server
+### 下载 FreeIPA-Server
 ```
 $ sudo apt install -y freeipa-server
 ```
@@ -189,7 +189,7 @@ $ sudo apt install -y freeipa-server
 -  admin server: ipa.sonnyhcl.top
 ```
 
-5. 配置 FreeIPA-Server
+### 配置 FreeIPA-Server
 ```
 $ sudo ipa-server-install --allow-zone-overlap
 # 接下来要输入参数如下
@@ -205,7 +205,7 @@ $ sudo ipa-server-install --allow-zone-overlap
 
 > 详细安装记录见附录
 
-6. Ubuntu Patch
+### Ubuntu Patch
 
 > 这几个都是FreeIPA在ubuntu上遇到的兼容性问题的修补方法
 
@@ -217,9 +217,9 @@ $ sudo pam-auth-update
 # 选 create home dir when first login
 ```
 
-### 测试
+## 测试
 
-1. 测试 kerberos
+### 测试 kerberos
 ```
 $ kinit admin
 Password for admin@SONNYHCL.TOP:
@@ -231,7 +231,7 @@ Valid starting     Expires            Service principal
 06/29/18 22:52:40  06/30/18 22:52:36  krbtgt/SONNYHCL.TOP@SONNYHCL.TOP
 ```
 
-2. 测试 ipa
+### 测试 ipa
 ```
 $ ipa user-find admin
 --------------
@@ -263,13 +263,13 @@ ipa-dnskeysyncd Service: RUNNING
 ipa: INFO: The ipactl command was successful
 ```
 
-3. 测试 Web UI
+### 测试 Web UI
 
 如果在虚拟机中部署，在宿主机访问，请确保你的宿主机　hosts　里面也写入了第2步中的域名解析
 
 访问`https://ipa.soaringlao.top/ipa/ui`，选择　高级　->　继续访问　即可跳过浏览器对 https 证书的质疑。输入刚刚创建的`admin`账户密码即可进入 Web 管理界面。
 
-### 参考链接
+## 参考链接
 - [CentOS 7 安装 FreeIPA 主从复制](https://qizhanming.com/blog/2019/04/29/install-freeipa-server-and-replica-on-centos-7)
 - [https://computingforgeeks.com/how-to-install-and-configure-freeipa-server-on-ubuntu-18-04-ubuntu-16-04/](https://computingforgeeks.com/how-to-install-and-configure-freeipa-server-on-ubuntu-18-04-ubuntu-16-04/)
 - 

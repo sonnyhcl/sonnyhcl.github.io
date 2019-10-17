@@ -16,13 +16,13 @@ date: 2019-10-17 11:16:43
 
 ## 搭建NTP服务
 
-1.  安装NTP
+###  安装NTP
 
     ```console
     sudo apt install ntp
     ```
     
-2.  修改ntp server虚拟主机的配置文件
+###  修改ntp server虚拟主机的配置文件
 
     ```console
     sudo vim /etc/ntp.conf
@@ -60,7 +60,7 @@ date: 2019-10-17 11:16:43
     -----------------------
     ```
 
-3.  配置ntp服务
+###  配置ntp服务
 
     ```console
     sudo systemctl enable ntp.service
@@ -69,7 +69,7 @@ date: 2019-10-17 11:16:43
     sudo systemctl restart ntp.service
     ```
 
-4.  查看NTP时间对准情况
+###  查看NTP时间对准情况
 
     > 重点关注offset和jitter两个参数,一般小于0.1就算校准了
 
