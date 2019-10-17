@@ -7,7 +7,6 @@ tags:
 date: 2019-10-17 11:29:04
 ---
 
-# FreeIPA服务安装
 当我们搭建本地私有云的时候,首先要考虑的就是一套统一的用户认证管理系统.
 
 市场上常用的用户管理有这么几种
@@ -15,6 +14,7 @@ date: 2019-10-17 11:29:04
 2. 选择一套较完善的开源方案,例如我们这里选用的FreeIPA,集成了认证/域控/用户管理等多种功能
 3. 选择使用Active Directory,除了收费之外一切都是顶配,不折腾省心
 
+<!-- more -->
 FreeIPA官方目前对`RedHat~Centos~Fedora>Ubuntu~Debian`几家做的兼容性比较多,这里记录了Centos和Ubuntu上安装ipa server的过程。
 
 ## Centos7 安装 FreeIPA Server
