@@ -7,12 +7,12 @@ tags:
 date: 2019-10-17 11:16:43
 ---
 
-# 时钟对准
+# 时钟对准NTP服务
 在搭建本地私有云的过程中,保证所有系统之间的时钟同步是非常重要的,因此为本地私有云维护一个专门的NTP server也是非常有必要的
 
 <!-- more -->
 
-## NTP server
+## 搭建NTP服务
 
 1.  安装NTP
 
@@ -20,19 +20,41 @@ date: 2019-10-17 11:16:43
     sudo apt install ntp
     ```
     
-2.  修改ntp server虚拟主机的NTP配置文件
+2.  修改ntp server虚拟主机的配置文件
 
     ```console
     sudo vim /etc/ntp.conf
     -----------------------
-    #pool 0.ubuntu.pool.ntp.org iburst
-    #pool 1.ubuntu.pool.ntp.org iburst
-    #pool 2.ubuntu.pool.ntp.org iburst
-    #pool 3.ubuntu.pool.ntp.org iburst
-    server ntp.sonnyhcl.top iburst maxpoll 7 minpoll 4
+    restrict -4 default notrap nomodify nopeer
+    restrict -6 default notrap nomodify nopeer
 
-    # Use Ubuntu's ntp server as a fallback.
-    #pool ntp.ubuntu.com
+    restrict 127.0.0.1
+    restrict ::1
+
+    driftfile /var/lib/ntp/drift/ntp.drift # path for drift file
+
+    logfile   /var/log/ntp		# alternate log file
+    logconfig =syncall +clockall +sysevents
+
+    keys /etc/ntp.keys		# path for keys file
+    trustedkey 1			# define trusted keys
+    requestkey 1			# key (7) for accessing server variables
+    controlkey 1			# key (6) for accessing server variables
+
+    restrict 0.cn.pool.ntp.org notrap nomodify noquery
+    pool 0.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+    restrict 1.cn.pool.ntp.org notrap nomodify noquery
+    pool 1.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+    restrict 2.cn.pool.ntp.org notrap nomodify noquery
+    pool 2.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+    restrict 3.cn.pool.ntp.org notrap nomodify noquery
+    pool 3.cn.pool.ntp.org iburst minpoll 4 maxpoll 7
+
+    server ntp.fudan.edu.cn iburst minpoll 4 maxpoll 7
+    server time1.google.com iburst minpoll 4 maxpoll 7
+    server time2.google.com iburst minpoll 4 maxpoll 7
+    server time3.google.com iburst minpoll 4 maxpoll 7
+    server time4.google.com iburst minpoll 4 maxpoll 7
     -----------------------
     ```
 
@@ -58,7 +80,7 @@ date: 2019-10-17 11:16:43
     ----------------------
     ```
 
-## 虚拟主机配置
+## NTP客户端配置
 
 当我们在本地私有云中新添加一个虚拟机,需要为它配置对应的ntp server时,以chrony为例我们需要做
 
