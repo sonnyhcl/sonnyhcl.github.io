@@ -41,7 +41,7 @@ timezone: Asia/Shanghai
 
 # 站点域名配置
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://sonnyhcl.top/
+url: https://sonnyhcl.com/
 root: /
 ## 很多博客都会选择在前面加上:year/:month/:day/:title/作为链接，个人喜好问题
 permalink: :title/
