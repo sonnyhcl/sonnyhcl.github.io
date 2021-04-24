@@ -20,7 +20,8 @@ jobs:
         with:
           ref: source
       - name: Checkout hexo-theme-next
-        run: git clone https://github.com/theme-next/hexo-theme-next --branch v7.8.0 themes/next --single-branch
+      # run: git clone https://github.com/theme-next/hexo-theme-next --branch v7.8.0 themes/next --single-branch
+        run: git clone https://github.com/theme-next/hexo-theme-next themes/next
       - name: Setup Node.js
         uses: actions/setup-node@v2.1.5
       - name: Cache NPM dependencies
