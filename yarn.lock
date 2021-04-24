@@ -1050,6 +1050,11 @@ hexo-symbols-count-time@^0.7.1:
   dependencies:
     hexo-util "1.9.0"
 
+hexo-theme-next@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/hexo-theme-next/-/hexo-theme-next-8.3.0.tgz#4078d4bbde9f300234f4bd6e2dcd30c4913a1a54"
+  integrity sha512-6JnAzQhnnqlDqA3FCinFJOl9Sp3+vRBG9BWeREq23L1vcI5OgkSNAeRDRwWaIULf4wesHF99HDtwBwFei6Mz+A==
+
 hexo-util@1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/hexo-util/-/hexo-util-1.9.0.tgz#0018429319720599253b2a3ddde0c5e4e4cfc652"

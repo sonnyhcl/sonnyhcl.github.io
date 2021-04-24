@@ -25,6 +25,7 @@
     "hexo-renderer-swig": "^1.1.0",
     "hexo-server": "^2.0.0",
     "hexo-sliding-spoiler": "^1.2.1",
-    "hexo-symbols-count-time": "^0.7.1"
+    "hexo-symbols-count-time": "^0.7.1",
+    "hexo-theme-next": "^8.3.0"
   }
 }
