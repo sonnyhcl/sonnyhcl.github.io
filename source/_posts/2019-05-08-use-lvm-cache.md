@@ -7,6 +7,7 @@ tags:
   - Cache
   - SSD
 date: 2019-05-08 19:34:25
+updated: 2019-05-08 19:34:25
 ---
 这篇文章介绍的是利用SSD给HDD做LVM Cache加速，SSD容量小但是速度快，HDD容量大但是延迟高，我们可以利用一个小SSD给HDD缓存加速访问速度。
 

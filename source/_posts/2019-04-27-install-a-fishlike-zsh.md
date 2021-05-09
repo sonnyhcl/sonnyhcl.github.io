@@ -1,6 +1,7 @@
 ---
 title: oh-my-fishy-zsh配置
 date: 2019-04-27 00:46:50
+updated: 2019-04-27 00:46:50
 categories:
 - Tech
 tags: 
