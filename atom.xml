@@ -6,7 +6,7 @@
   <link href="https://sonnyhcl.com/atom.xml" rel="self"/>
   
   <link href="https://sonnyhcl.com/"/>
-  <updated>2019-10-17T05:30:41.000Z</updated>
+  <updated>2021-12-29T03:10:54.000Z</updated>
   <id>https://sonnyhcl.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Certificated Kubernetes Application Developer</title>
+    <link href="https://sonnyhcl.com/ckad/"/>
+    <id>https://sonnyhcl.com/ckad/</id>
+    <published>2021-12-29T03:10:54.000Z</published>
+    <updated>2021-12-29T03:10:54.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>分享一下之前准备 CKAD 考试的一些资料</p><span id="more"></span><h2 id="What’s-CKAD"><a href="#What’s-CKAD" class="headerlink" title="What’s CKAD"></a>What’s CKAD</h2><p>The Certified Kubernetes Application Developer (CKAD) program has been developed by the Cloud Native Computing Foundation (CNCF), in collaboration with The Linux Foundation, to help expand the Kubernetes ecosystem through standardized training and certification.</p><blockquote><p>From <a href="https://www.cncf.io/certification/ckad/">https://www.cncf.io/certification/ckad/</a></p></blockquote><p>The Certified Kubernetes Application Developer exam certifies that users can design, build, configure, and expose cloud native applications for Kubernetes.</p><blockquote><p>From <a href="https://www.cncf.io/certification/ckad/">https://www.cncf.io/certification/ckad/</a></p></blockquote><h2 id="Curriculum"><a href="#Curriculum" class="headerlink" title="Curriculum"></a>Curriculum</h2><p><a href="https://github.com/cncf/curriculum">https://github.com/cncf/curriculum</a></p><h2 id="Free-resources-for-CKAD-and-Kubernetes"><a href="#Free-resources-for-CKAD-and-Kubernetes" class="headerlink" title="Free resources for CKAD and Kubernetes"></a>Free resources for CKAD and Kubernetes</h2><ul><li><p>K8s provider </p><ul><li>AKS: <a href="https://ms.portal.azure.com/">https://ms.portal.azure.com/</a> </li><li>Minikube: <a href="https://minikube.sigs.k8s.io/docs/start/">https://minikube.sigs.k8s.io/docs/start/</a></li></ul></li><li><p>Kubernetes official doc</p><blockquote><p>only website you can visit during exam</p></blockquote><ul><li>Kubectl Command: <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#run">https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#run</a><br>○ <a href="https://v1-21.docs.kubernetes.io/docs/reference/generated/kubectl/kubectl-commands">https://v1-21.docs.kubernetes.io/docs/reference/generated/kubectl/kubectl-commands</a><ul><li>Kubectl Doc: <a href="https://kubernetes.io/docs/concepts/">https://kubernetes.io/docs/concepts/</a></li></ul></li></ul></li><li><p>Book on Kubernetes Knowledge</p><ul><li>Kubernetes in Action: <a href="https://learning.oreilly.com/library/view/kubernetes-in-action/9781617293726/">https://learning.oreilly.com/library/view/kubernetes-in-action/9781617293726/</a></li><li>Kubernetes Pattern: <a href="https://learning.oreilly.com/library/view/kubernetes-patterns/9781492050278/">https://learning.oreilly.com/library/view/kubernetes-patterns/9781492050278/</a></li></ul></li><li><p>CKAD Self Practice questions:</p><ul><li><a href="https://github.com/dgkanatsios/CKAD-exercises">https://github.com/dgkanatsios/CKAD-exercises</a></li><li><a href="https://github.com/bbachi/CKAD-Practice-Questions">https://github.com/bbachi/CKAD-Practice-Questions</a></li><li><a href="https://github.com/bmuschko/ckad-prep">https://github.com/bmuschko/ckad-prep</a></li></ul></li><li><p>CKAD Interactive Practice</p><ul><li><a href="https://www.katacoda.com/liptanbiswas/courses/ckad-practice-challenges/core-concepts">https://www.katacoda.com/liptanbiswas/courses/ckad-practice-challenges/core-concepts</a></li><li><a href="https://learning.oreilly.com/playlists/8aa87dce-f9a9-4206-83af-c8c730faa430/">https://learning.oreilly.com/playlists/8aa87dce-f9a9-4206-83af-c8c730faa430/</a></li><li><a href="https://killer.sh/ckad">https://killer.sh/ckad</a> (2 free session after you register CKAD exam)</li></ul></li><li><p>CKAD Training Video</p><ul><li><a href="https://app.pluralsight.com/paths/certificate/certified-kubernetes-application-developer-ckad">https://app.pluralsight.com/paths/certificate/certified-kubernetes-application-developer-ckad</a></li><li><a href="https://training.linuxfoundation.org/training/introduction-to-kubernetes/">https://training.linuxfoundation.org/training/introduction-to-kubernetes/</a></li><li><a href="https://learning.oreilly.com/learning-paths/learning-path-certified/9781492061021/">https://learning.oreilly.com/learning-paths/learning-path-certified/9781492061021/</a></li></ul></li></ul><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;分享一下之前准备 CKAD 考试的一些资料&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Tech" scheme="https://sonnyhcl.com/categories/Tech/"/>
+    
+    
+    <category term="Tech" scheme="https://sonnyhcl.com/tags/Tech/"/>
+    
+    <category term="CKAD" scheme="https://sonnyhcl.com/tags/CKAD/"/>
+    
+    <category term="Kubernetes" scheme="https://sonnyhcl.com/tags/Kubernetes/"/>
+    
+  </entry>
   
   <entry>
     <title>搭建本地私有云之集成LDAP+Office+Transmission的NextCloud</title>
