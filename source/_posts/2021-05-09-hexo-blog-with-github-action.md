@@ -13,7 +13,7 @@ updated: 2021-05-09 19:31:08
 
 最近发现`.top`的域名经常会被各种不友好防火墙封杀（比如公司网络），就给博客换了个新的域名[`sonnyhcl.com`](https://sonnyhcl.com)。
 
-博客之前是基于 GitHub Pages+Hexo+Next Mist+Travis CI 搭建的，详情请参考这篇博客（[Hexo+GitHub 搭建个人博客](../2019-04-27-hexo-github-page-blog.md)。
+博客之前是基于 GitHub Pages+Hexo+Next Mist+Travis CI 搭建的，详情请参考这篇博客（[Hexo+GitHub 搭建个人博客](./hexo-github-page-blog)）。
 正巧发现 Travis CI 已经被 deprecated 不能正常工作了，就想着尝鲜用 GitHub Action 来做自动集成。
 
 <!-- more -->
