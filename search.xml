@@ -746,7 +746,7 @@
     <title>使用GitHub Action自动生成Hexo个人博客</title>
     <url>/hexo-blog-with-github-action/</url>
     <content><![CDATA[<p>最近发现<code>.top</code>的域名经常会被各种不友好防火墙封杀（比如公司网络），就给博客换了个新的域名<a href="https://sonnyhcl.com/"><code>sonnyhcl.com</code></a>。</p>
-<p>博客之前是基于 GitHub Pages+Hexo+Next Mist+Travis CI 搭建的，详情请参考这篇博客（<a href="./hexo-github-page-blog">Hexo+GitHub 搭建个人博客</a>）。<br>正巧发现 Travis CI 已经被 deprecated 不能正常工作了，就想着尝鲜用 GitHub Action 来做自动集成。</p>
+<p>博客之前是基于 GitHub Pages+Hexo+Next Mist+Travis CI 搭建的，详情请参考这篇博客 <a href="/hexo-github-page-blog/" title="Hexo+GitHub 搭建个人博客">Hexo+GitHub 搭建个人博客</a>。<br>正巧发现 Travis CI 已经被 deprecated 不能正常工作了，就想着尝鲜用 GitHub Action 来做自动集成。</p>
 <span id="more"></span>
 
 <h2 id="GitHub-Action-定义"><a href="#GitHub-Action-定义" class="headerlink" title="GitHub Action 定义"></a>GitHub Action 定义</h2><p>GitHub Action 的文件定义在<code>.github/workflows</code>文件夹下，每个 yaml 文件存着对应的 GitHub Action 的定义，当然本质上它就是一层套了壳的 Azure Pipeline，所以看起来会跟 Azure Pipeline 极度相似。如下所示是本博客所使用的 GitHub Action 定义。</p>
