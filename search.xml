@@ -813,4 +813,89 @@
         <tag>Kubernetes</tag>
       </tags>
   </entry>
+  <entry>
+    <title>test-driven-develop</title>
+    <url>/test-driven-develop/</url>
+    <content><![CDATA[<p>“测试驱动开发”是一个比较有意思的软件工程上的概念，一直都想找个机会看看。刚好最近在重构工作中用到的 CI/CD + Test Infra，所以借此机会来看一下《测试驱动开发》这本书。</p>
+<span id="more"></span>
+
+<p>这本书分成三个大模块，前两个模块可以跳过，直接来到第三模块：测试驱动开发的模式。</p>
+<h2 id="测试驱动开发的模式"><a href="#测试驱动开发的模式" class="headerlink" title="测试驱动开发的模式"></a>测试驱动开发的模式</h2><ul>
+<li><ol start="25">
+<li>测试驱动开发模式</li>
+</ol>
+<ul>
+<li>相互独立的测试<ul>
+<li>测试尽可能快</li>
+<li>如果有两个测试失败了，应该是不同的两个问题，而不是环境问题</li>
+</ul>
+</li>
+<li>先写测试</li>
+<li>先写断言</li>
+<li>编写测试数据<ul>
+<li>mock data 尽量简单直观，使用常量字符串表明含义</li>
+<li>真实数据要有实用场景支撑</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ol start="26">
+<li>不可运行状态模式</li>
+</ol>
+<ul>
+<li>启动测试<ul>
+<li>选择尽量简单的测试目标作为第一步</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ol start="27">
+<li>测试规范</li>
+</ol>
+<ul>
+<li>拆分较大的测试</li>
+<li>对于昂贵/复杂（时间/金钱意义上）的测试对象，采用 Mock 的方式进行测试<ul>
+<li>risk: 保证 mock object 与实际对象的行为一致</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ol start="28">
+<li>可运行模式</li>
+</ol>
+<ul>
+<li>失败的测试比不能运行的测试要好<ul>
+<li>example: 不能运行的测试有时候甚至会从测试报告中遗漏</li>
+</ul>
+</li>
+<li>利用测试推动抽象：当你有两个以上的例子时候才能进行进一步抽象</li>
+</ul>
+</li>
+<li><ol start="30">
+<li>设计模式</li>
+</ol>
+<ul>
+<li>常用的设计模式同样对编写测试代码有指导作用</li>
+</ul>
+</li>
+<li><ol start="32">
+<li>掌握 TDD</li>
+</ol>
+<ul>
+<li>Smell: 过长或者冗余的对象初始化脚手架代码，过长的测试运行时间，测试经常 transient 地失败</li>
+<li>需要编写多少测试：考虑平均无故障时间，不必要为用不着的极限情况写测试</li>
+<li>如何中途转向 TDD：不推荐直接完全重构。的确是比较困难。</li>
+</ul>
+</li>
+</ul>
+<p>整本书读下来的整体感觉还是过于 high level 了，希望以后能常读常新吧。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>Reading</category>
+      </categories>
+      <tags>
+        <tag>TDD</tag>
+        <tag>Test-Driven-Develop</tag>
+      </tags>
+  </entry>
 </search>
