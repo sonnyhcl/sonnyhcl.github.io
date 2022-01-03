@@ -72,4 +72,4 @@ jobs:
 
 定义好 GitHub Action 之后，每次 source 分支有新的 commit，都会自动触发 GitHub Action 对 source 分支进行一次新的 build，并把 build 好的静态文件内容发布到 master 分支上去，整个过程大约在 30s 左右完成，随后就可以看到我挂在 GitHub Pages 上的博客网站已经自动更新了。
 
-![GitHub Action](./2021-05-09-hexo-blog-with-github-action/github_action.png)
+![GitHub Action](github_action.png)
