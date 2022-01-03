@@ -814,7 +814,7 @@
       </tags>
   </entry>
   <entry>
-    <title>test-driven-develop</title>
+    <title>Test Driven Delelop</title>
     <url>/test-driven-develop/</url>
     <content><![CDATA[<p>“测试驱动开发”是一个比较有意思的软件工程上的概念，一直都想找个机会看看。刚好最近在重构工作中用到的 CI/CD + Test Infra，所以借此机会来看一下《测试驱动开发》这本书。</p>
 <span id="more"></span>
@@ -894,8 +894,7 @@
         <category>Reading</category>
       </categories>
       <tags>
-        <tag>TDD</tag>
-        <tag>Test-Driven-Develop</tag>
+        <tag>test-driven-develop</tag>
       </tags>
   </entry>
 </search>

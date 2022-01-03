@@ -17,7 +17,7 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>test-driven-develop</title>
+    <title>Test Driven Delelop</title>
     <link href="https://sonnyhcl.com/test-driven-develop/"/>
     <id>https://sonnyhcl.com/test-driven-develop/</id>
     <published>2022-01-03T03:31:30.000Z</published>
@@ -33,9 +33,7 @@
     <category term="Reading" scheme="https://sonnyhcl.com/categories/Reading/"/>
     
     
-    <category term="TDD" scheme="https://sonnyhcl.com/tags/TDD/"/>
-    
-    <category term="Test-Driven-Develop" scheme="https://sonnyhcl.com/tags/Test-Driven-Develop/"/>
+    <category term="test-driven-develop" scheme="https://sonnyhcl.com/tags/test-driven-develop/"/>
     
   </entry>
   
