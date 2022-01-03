@@ -23,25 +23,26 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"sonnyhcl.com","root":"/","images":"/images","scheme":"Pisces","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}};
   </script>
-<meta name="description" content="这个系列是笔者在为实验室搭建本地私有云的过程中所记载的笔记,看起来会比较杂乱 :) 在安装完FreeIPA之后,访问WebUI会遇到https证书的问题,因为到目前为止还是自签名的证书,本文中我们就来为FreeIPA加上认证过的阿里云域名证书">
+<meta name="description" content="最近发现.top的域名经常会被各种不友好防火墙封杀（比如公司网络），就给博客换了个新的域名sonnyhcl.com。 博客之前是基于 GitHub Pages+Hexo+Next Mist+Travis CI 搭建的，详情请参考这篇博客（Hexo+GitHub 搭建个人博客。正巧发现 Travis CI 已经被 deprecated 不能正常工作了，就想着尝鲜用 GitHub Action 来做自">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建本地私有云之FreeIPA的https">
-<meta property="og:url" content="https://sonnyhcl.com/on-premise-freeipa-webui-https/index.html">
+<meta property="og:title" content="使用GitHub Action自动生成Hexo个人博客">
+<meta property="og:url" content="https://sonnyhcl.com/hexo-blog-with-github-action/index.html">
 <meta property="og:site_name" content="胡一刀的个人博客">
-<meta property="og:description" content="这个系列是笔者在为实验室搭建本地私有云的过程中所记载的笔记,看起来会比较杂乱 :) 在安装完FreeIPA之后,访问WebUI会遇到https证书的问题,因为到目前为止还是自签名的证书,本文中我们就来为FreeIPA加上认证过的阿里云域名证书">
+<meta property="og:description" content="最近发现.top的域名经常会被各种不友好防火墙封杀（比如公司网络），就给博客换了个新的域名sonnyhcl.com。 博客之前是基于 GitHub Pages+Hexo+Next Mist+Travis CI 搭建的，详情请参考这篇博客（Hexo+GitHub 搭建个人博客。正巧发现 Travis CI 已经被 deprecated 不能正常工作了，就想着尝鲜用 GitHub Action 来做自">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-10-17T04:55:57.000Z">
-<meta property="article:modified_time" content="2019-10-17T04:55:57.000Z">
+<meta property="og:image" content="https://sonnyhcl.com/hexo-blog-with-github-action/2021-05-09-hexo-blog-with-github-action/github_action.png">
+<meta property="article:published_time" content="2021-05-09T11:31:08.000Z">
+<meta property="article:modified_time" content="2021-05-09T11:31:08.000Z">
 <meta property="article:author" content="sonnyhcl">
-<meta property="article:tag" content="on-premise-cloud">
-<meta property="article:tag" content="FreeIPA">
-<meta property="article:tag" content="FreeIPA WebUI">
-<meta property="article:tag" content="SSL">
-<meta property="article:tag" content="https">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Next">
+<meta property="article:tag" content="Mist">
+<meta property="article:tag" content="Github Action">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sonnyhcl.com/hexo-blog-with-github-action/2021-05-09-hexo-blog-with-github-action/github_action.png">
 
 
-<link rel="canonical" href="https://sonnyhcl.com/on-premise-freeipa-webui-https/">
+<link rel="canonical" href="https://sonnyhcl.com/hexo-blog-with-github-action/">
 
 
 <script class="page-configurations">
@@ -53,7 +54,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>搭建本地私有云之FreeIPA的https | 胡一刀的个人博客</title>
+<title>使用GitHub Action自动生成Hexo个人博客 | 胡一刀的个人博客</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136085813-1"></script>
     <script>
@@ -201,7 +202,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91SSL%E5%9F%9F%E5%90%8D%E8%AF%81%E4%B9%A6"><span class="nav-number">1.</span> <span class="nav-text">阿里云SSL域名证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPA%E5%BC%95%E5%85%A5CA%E8%AF%81%E4%B9%A6"><span class="nav-number">2.</span> <span class="nav-text">IPA引入CA证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPA-WebUI-%E5%BC%95%E5%85%A5%E5%9F%9F%E5%90%8D%E8%AF%81%E4%B9%A6"><span class="nav-number">3.</span> <span class="nav-text">IPA WebUI 引入域名证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub-Action-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">GitHub Action 定义</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -281,7 +282,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sonnyhcl.com/on-premise-freeipa-webui-https/">
+    <link itemprop="mainEntityOfPage" href="https://sonnyhcl.com/hexo-blog-with-github-action/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/128x128.jpg">
@@ -294,7 +295,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          搭建本地私有云之FreeIPA的https
+          使用GitHub Action自动生成Hexo个人博客
         </h1>
 
         <div class="post-meta-container">
@@ -305,7 +306,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2019-10-17 12:55:57" itemprop="dateCreated datePublished" datetime="2019-10-17T12:55:57+08:00">2019-10-17</time>
+      <time title="创建时间：2021-05-09 19:31:08" itemprop="dateCreated datePublished" datetime="2021-05-09T19:31:08+08:00">2021-05-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -333,8 +334,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/on-premise-freeipa-webui-https/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="on-premise-freeipa-webui-https/" itemprop="commentCount"></span>
+    <a title="disqus" href="/hexo-blog-with-github-action/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="hexo-blog-with-github-action/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -346,14 +347,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.8k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -364,23 +365,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>这个系列是笔者在为实验室搭建本地私有云的过程中所记载的笔记,看起来会比较杂乱 :)</p>
-<p>在<a href="on-premise-freeipa">安装完FreeIPA</a>之后,访问WebUI会遇到https证书的问题,因为到目前为止还是自签名的证书,本文中我们就来为FreeIPA加上认证过的阿里云域名证书</p>
+        <p>最近发现<code>.top</code>的域名经常会被各种不友好防火墙封杀（比如公司网络），就给博客换了个新的域名<a href="https://sonnyhcl.com/"><code>sonnyhcl.com</code></a>。</p>
+<p>博客之前是基于 GitHub Pages+Hexo+Next Mist+Travis CI 搭建的，详情请参考这篇博客（<a href="../2019-04-27-hexo-github-page-blog.md">Hexo+GitHub 搭建个人博客</a>。<br>正巧发现 Travis CI 已经被 deprecated 不能正常工作了，就想着尝鲜用 GitHub Action 来做自动集成。</p>
 <span id="more"></span>
-<h2 id="阿里云SSL域名证书"><a href="#阿里云SSL域名证书" class="headerlink" title="阿里云SSL域名证书"></a>阿里云SSL域名证书</h2><p>从阿里云可以下载到<code>2259124_ipa.sonnyhcl.top_tomcat.zip</code>的域名证书</p>
-<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@ipa</span> <span class="number">2259124</span>_ipa.sonnyhcl.top_tomcat]<span class="meta"># tree -L 2</span></span><br><span class="line">.</span><br><span class="line">├── <span class="number">2259124</span>_ipa.sonnyhcl.top.pfx  <span class="meta"># 二进制文件</span></span><br><span class="line">└── pfx-password.txt                <span class="meta"># 证书密码</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="IPA引入CA证书"><a href="#IPA引入CA证书" class="headerlink" title="IPA引入CA证书"></a>IPA引入CA证书</h2><p>阿里云的认证链是 <code>DigiCert Global Root CA</code> -&gt; <code>Encryption Everywhere DV TLS CA - G1</code> -&gt; <code>ipa.sonnyhcl.top</code></p>
-<ul>
-<li><code>DigiCert.crt</code><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">MIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh</span><br><span class="line">MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3</span><br><span class="line">d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD</span><br><span class="line">QTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVT</span><br><span class="line">MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j</span><br><span class="line">b20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG</span><br><span class="line">9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsB</span><br><span class="line">CSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97</span><br><span class="line">nh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt</span><br><span class="line">43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7P</span><br><span class="line">T19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4</span><br><span class="line">gdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAO</span><br><span class="line">BgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbR</span><br><span class="line">TLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUw</span><br><span class="line">DQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/Esr</span><br><span class="line">hMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg</span><br><span class="line">06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJF</span><br><span class="line">PnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0ls</span><br><span class="line">YSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQk</span><br><span class="line">CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure></li>
-<li><code>Encryption.crt</code><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">MIIEqjCCA5KgAwIBAgIQAnmsRYvBskWr+YBTzSybsTANBgkqhkiG9w0BAQsFADBh</span><br><span class="line">MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3</span><br><span class="line">d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD</span><br><span class="line">QTAeFw0xNzExMjcxMjQ2MTBaFw0yNzExMjcxMjQ2MTBaMG4xCzAJBgNVBAYTAlVT</span><br><span class="line">MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j</span><br><span class="line">b20xLTArBgNVBAMTJEVuY3J5cHRpb24gRXZlcnl3aGVyZSBEViBUTFMgQ0EgLSBH</span><br><span class="line">MTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALPeP6wkab41dyQh6mKc</span><br><span class="line">oHqt3jRIxW5MDvf9QyiOR7VfFwK656es0UFiIb74N9pRntzF1UgYzDGu3ppZVMdo</span><br><span class="line">lbxhm6dWS9OK/lFehKNT0OYI9aqk6F+U7cA6jxSC+iDBPXwdF4rs3KRyp3aQn6pj</span><br><span class="line">pp1yr7IB6Y4zv72Ee/PlZ/6rK6InC6WpK0nPVOYR7n9iDuPe1E4IxUMBH/T33+3h</span><br><span class="line">yuH3dvfgiWUOUkjdpMbyxX+XNle5uEIiyBsi4IvbcTCh8ruifCIi5mDXkZrnMT8n</span><br><span class="line">wfYCV6v6kDdXkbgGRLKsR4pucbJtbKqIkUGxuZI2t7pfewKRc5nWecvDBZf3+p1M</span><br><span class="line">pA8CAwEAAaOCAU8wggFLMB0GA1UdDgQWBBRVdE+yck/1YLpQ0dfmUVyaAYca1zAf</span><br><span class="line">BgNVHSMEGDAWgBQD3lA1VtFMu2bwo+IbG8OXsj3RVTAOBgNVHQ8BAf8EBAMCAYYw</span><br><span class="line">HQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBIGA1UdEwEB/wQIMAYBAf8C</span><br><span class="line">AQAwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdp</span><br><span class="line">Y2VydC5jb20wQgYDVR0fBDswOTA3oDWgM4YxaHR0cDovL2NybDMuZGlnaWNlcnQu</span><br><span class="line">Y29tL0RpZ2lDZXJ0R2xvYmFsUm9vdENBLmNybDBMBgNVHSAERTBDMDcGCWCGSAGG</span><br><span class="line">/WwBAjAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BT</span><br><span class="line">MAgGBmeBDAECATANBgkqhkiG9w0BAQsFAAOCAQEAK3Gp6/aGq7aBZsxf/oQ+TD/B</span><br><span class="line">SwW3AU4ETK+GQf2kFzYZkby5SFrHdPomunx2HBzViUchGoofGgg7gHW0W3MlQAXW</span><br><span class="line">M0r5LUvStcr82QDWYNPaUy4taCQmyaJ+VB+6wxHstSigOlSNF2a6vg4rgexixeiV</span><br><span class="line">4YSB03Yqp2t3TeZHM9ESfkus74nQyW7pRGezj+TC44xCagCQQOzzNmzEAP2SnCrJ</span><br><span class="line">sNE2DpRVMnL8J6xBRdjmOsC3N6cQuKuRXbzByVBjCqAA8t1L0I+9wXJerLPyErjy</span><br><span class="line">rMKWaBFLmfK/AHNF4ZihwPGOc7w6UHczBZXH5RFzJNnww+WnKuTPI0HfnVH8lg==</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure></li>
-<li>import CA<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ipa-cacert-manage -<span class="built_in">n</span> DigiCert -<span class="built_in">t</span> C,, install DigiCert.crt</span><br><span class="line">ipa-cacert-manage -<span class="built_in">n</span> Encryption -<span class="built_in">t</span> C,, install Encryption.crt</span><br><span class="line">ipa-certupdate -v</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="IPA-WebUI-引入域名证书"><a href="#IPA-WebUI-引入域名证书" class="headerlink" title="IPA WebUI 引入域名证书"></a>IPA WebUI 引入域名证书</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat pfx-<span class="keyword">password</span>.txt | ipa-<span class="keyword">server</span>-certinstall -w ipa.sonnyhcl.top.pfx</span><br><span class="line">sudo ipactl <span class="keyword">restart</span></span><br></pre></td></tr></table></figure>
+<h2 id="GitHub-Action-定义"><a href="#GitHub-Action-定义" class="headerlink" title="GitHub Action 定义"></a>GitHub Action 定义</h2><p>GitHub Action 的文件定义在<code>.github/workflows</code>文件夹下，每个 yaml 文件存着对应的 GitHub Action 的定义，当然本质上它就是一层套了壳的 Azure Pipeline，所以看起来会跟 Azure Pipeline 极度相似。如下所示是本博客所使用的 GitHub Action 定义。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">CI</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [<span class="string">source</span>]</span><br><span class="line"></span><br><span class="line"><span class="attr">env:</span></span><br><span class="line">  <span class="attr">GIT_USER:</span> <span class="string">&quot;&quot;</span> <span class="comment"># Your display name</span></span><br><span class="line">  <span class="attr">GIT_EMAIL:</span> <span class="string">&quot;&quot;</span> <span class="comment"># Your git email address</span></span><br><span class="line">  <span class="attr">DEPLOY_REPO:</span> <span class="string">&quot;&quot;</span> <span class="comment"># Your repo</span></span><br><span class="line">  <span class="attr">DEPLOY_BRANCH:</span> <span class="string">master</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">pages:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">source</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v1</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">ref:</span> <span class="string">source</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Setup</span> <span class="string">Node.js</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-node@v2.1.5</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cache</span> <span class="string">NPM</span> <span class="string">dependencies</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/cache@v2</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">node_modules</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">$&#123;&#123;</span> <span class="string">runner.OS</span> <span class="string">&#125;&#125;-npm-cache</span></span><br><span class="line">          <span class="attr">restore-keys:</span> <span class="string">|</span></span><br><span class="line">            <span class="string">$&#123;&#123;</span> <span class="string">runner.OS</span> <span class="string">&#125;&#125;-npm-cache</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">peaceiris/actions-gh-pages@v3</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">github_token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GITHUB_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">publish_dir:</span> <span class="string">./public</span></span><br><span class="line">          <span class="attr">publish_branch:</span> <span class="string">master</span> <span class="comment"># deploying branch</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://blog.soholabs.org/lets-encrypt-and-the-freeipa-web-gui/">https://blog.soholabs.org/lets-encrypt-and-the-freeipa-web-gui/</a></li>
-</ul>
+<p>定义好 GitHub Action 之后，每次 source 分支有新的 commit，都会自动触发 GitHub Action 对 source 分支进行一次新的 build，并把 build 好的静态文件内容发布到 master 分支上去，整个过程大约在 30s 左右完成，随后就可以看到我挂在 GitHub Pages 上的博客网站已经自动更新了。</p>
+<p><img src="./2021-05-09-hexo-blog-with-github-action/github_action.png" alt="GitHub Action"></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -398,7 +391,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://sonnyhcl.com/on-premise-freeipa-webui-https/" title="搭建本地私有云之FreeIPA的https">https://sonnyhcl.com/on-premise-freeipa-webui-https/</a>
+      <a href="https://sonnyhcl.com/hexo-blog-with-github-action/" title="使用GitHub Action自动生成Hexo个人博客">https://sonnyhcl.com/hexo-blog-with-github-action/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
@@ -407,24 +400,23 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/on-premise-cloud/" rel="tag"><i class="fa fa-tag"></i> on-premise-cloud</a>
-              <a href="/tags/FreeIPA/" rel="tag"><i class="fa fa-tag"></i> FreeIPA</a>
-              <a href="/tags/FreeIPA-WebUI/" rel="tag"><i class="fa fa-tag"></i> FreeIPA WebUI</a>
-              <a href="/tags/SSL/" rel="tag"><i class="fa fa-tag"></i> SSL</a>
-              <a href="/tags/https/" rel="tag"><i class="fa fa-tag"></i> https</a>
+              <a href="/tags/Hexo/" rel="tag"><i class="fa fa-tag"></i> Hexo</a>
+              <a href="/tags/Next/" rel="tag"><i class="fa fa-tag"></i> Next</a>
+              <a href="/tags/Mist/" rel="tag"><i class="fa fa-tag"></i> Mist</a>
+              <a href="/tags/Github-Action/" rel="tag"><i class="fa fa-tag"></i> Github Action</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/on-premise-dhcp/" rel="prev" title="搭建本地私有云之DHCP">
-                  <i class="fa fa-chevron-left"></i> 搭建本地私有云之DHCP
+                <a href="/on-premise-nextcloud-with-ldap-and-office-and-transmission/" rel="prev" title="搭建本地私有云之集成LDAP+Office+Transmission的NextCloud">
+                  <i class="fa fa-chevron-left"></i> 搭建本地私有云之集成LDAP+Office+Transmission的NextCloud
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/on-premise-freeipa-replica/" rel="next" title="搭建本地私有云之FreeIPA主从备份">
-                  搭建本地私有云之FreeIPA主从备份 <i class="fa fa-chevron-right"></i>
+                <a href="/ckad/" rel="next" title="Certificated Kubernetes Application Developer">
+                  Certificated Kubernetes Application Developer <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -550,9 +542,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://sonnyhcl.com/on-premise-freeipa-webui-https/";
-    this.page.identifier = "on-premise-freeipa-webui-https/";
-    this.page.title = "搭建本地私有云之FreeIPA的https";
+    this.page.url = "https://sonnyhcl.com/hexo-blog-with-github-action/";
+    this.page.identifier = "hexo-blog-with-github-action/";
+    this.page.title = "使用GitHub Action自动生成Hexo个人博客";
     };
   NexT.utils.loadComments('#disqus_thread', () => {
     if (window.DISQUS) {
