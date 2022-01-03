@@ -1,10 +1,9 @@
 ---
-title: test-driven-develop
+title: Test Driven Delelop
 categories:
   - Reading
 tags:
-  - TDD
-  - Test-Driven-Develop
+  - test-driven-develop
 date: 2022-01-03 11:31:30
 updated: 2022-01-03 11:31:30
 ---
