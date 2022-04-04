@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sonnyhcl.com","root":"/","images":"/images","scheme":"Pisces","version":"8.3.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":true,"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}};
+  </script>
+<meta name="description" content="本文是阅读了Maven官网的介绍和教程之后写的小结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How Maven Works">
+<meta property="og:url" content="https://sonnyhcl.com/how-maven-works/index.html">
+<meta property="og:site_name" content="胡一刀的个人博客">
+<meta property="og:description" content="本文是阅读了Maven官网的介绍和教程之后写的小结。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sonnyhcl.com/how-maven-works/maven_helper_plugin.png">
+<meta property="article:published_time" content="2022-04-04T03:33:13.000Z">
+<meta property="article:modified_time" content="2022-04-04T03:33:13.000Z">
+<meta property="article:author" content="sonnyhcl">
+<meta property="article:tag" content="maven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sonnyhcl.com/how-maven-works/maven_helper_plugin.png">
+
+
+<link rel="canonical" href="https://sonnyhcl.com/how-maven-works/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>How Maven Works | 胡一刀的个人博客</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136085813-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-136085813-1');
+      }
+    </script>
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="胡一刀的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">胡一刀的个人博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">May the force be with you</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">38</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">16</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#POM"><span class="nav-number">1.</span> <span class="nav-text">POM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Super-POM"><span class="nav-number">1.1.</span> <span class="nav-text">Super POM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Aggregation"><span class="nav-number">1.2.</span> <span class="nav-text">Project Aggregation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Interpolation-and-Variables"><span class="nav-number">1.3.</span> <span class="nav-text">Project Interpolation and Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Project-Variables"><span class="nav-number">1.3.1.</span> <span class="nav-text">Project Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Properties"><span class="nav-number">1.3.2.</span> <span class="nav-text">Properties</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dependency-Mechanism"><span class="nav-number">2.</span> <span class="nav-text">Dependency Mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transitive-Dependencies"><span class="nav-number">2.1.</span> <span class="nav-text">Transitive Dependencies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dependency-Mediation"><span class="nav-number">2.1.1.</span> <span class="nav-text">Dependency Mediation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Rule1-Nearest-definition"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">Rule1 - Nearest definition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rule2-First-declaration-wins"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">Rule2 - First declaration wins</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tip1-Always-specify-the-dependencies-that-source-code-uses-directly"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">Tip1 - Always specify the dependencies that source code uses directly</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dependency-Scope"><span class="nav-number">2.2.</span> <span class="nav-text">Dependency Scope</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scopes-for-transitive-dependency"><span class="nav-number">2.2.1.</span> <span class="nav-text">Scopes for transitive dependency</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dependency-Management"><span class="nav-number">2.3.</span> <span class="nav-text">Dependency Management</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dependency-Exclusion"><span class="nav-number">2.4.</span> <span class="nav-text">Dependency Exclusion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-dependency-exclusions"><span class="nav-number">2.4.1.</span> <span class="nav-text">How to use dependency exclusions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Maven-Dependency-Tools"><span class="nav-number">2.5.</span> <span class="nav-text">Maven Dependency Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mvn-command"><span class="nav-number">2.5.1.</span> <span class="nav-text">mvn command</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven-Helper"><span class="nav-number">2.5.2.</span> <span class="nav-text">Maven Helper</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-Lifecycle"><span class="nav-number">3.</span> <span class="nav-text">Build Lifecycle</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Clean-Lifecycle"><span class="nav-number">3.1.</span> <span class="nav-text">Clean Lifecycle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Default-LifeCycle"><span class="nav-number">3.2.</span> <span class="nav-text">Default LifeCycle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Site-Lifecycle"><span class="nav-number">3.3.</span> <span class="nav-text">Site Lifecycle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mvn-command-line-with-lifecycle"><span class="nav-number">3.4.</span> <span class="nav-text">mvn command line with lifecycle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-phase-is-made-up-of-plugin-goals"><span class="nav-number">3.5.</span> <span class="nav-text">Build phase is made up of plugin goals</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Repository-Management"><span class="nav-number">4.</span> <span class="nav-text">Repository Management</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-Practice-Use-Mirrors-for-Repositories"><span class="nav-number">4.1.</span> <span class="nav-text">Best Practice - Use Mirrors for Repositories</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Profiles"><span class="nav-number">5.</span> <span class="nav-text">Profiles</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activate-Profile"><span class="nav-number">5.1.</span> <span class="nav-text">Activate Profile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Profile-Order"><span class="nav-number">5.2.</span> <span class="nav-text">Profile Order</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sonnyhcl"
+      src="/images/128x128.jpg">
+  <p class="site-author-name" itemprop="name">sonnyhcl</p>
+  <div class="site-description" itemprop="description">Talk is cheap. Show me your code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sonnyhcl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sonnyhcl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/sonnyhcl" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sonnyhcl.com/how-maven-works/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/128x128.jpg">
+      <meta itemprop="name" content="sonnyhcl">
+      <meta itemprop="description" content="Talk is cheap. Show me your code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="胡一刀的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          How Maven Works
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-04 11:33:13" itemprop="dateCreated datePublished" datetime="2022-04-04T11:33:13+08:00">2022-04-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Reading/" itemprop="url" rel="index"><span itemprop="name">Reading</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/how-maven-works/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="how-maven-works/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文是阅读了Maven官网的介绍和教程之后写的小结。</p>
+<span id="more"></span>
+
+<p>This page summarizes useful info from <a target="_blank" rel="noopener" href="https://maven.apache.org/">Maven official website</a>.</p>
+<h1 id="POM"><a href="#POM" class="headerlink" title="POM"></a>POM</h1><p><a target="_blank" rel="noopener" href="https://maven.apache.org/guides/introduction/introduction-to-the-pom.html">https://maven.apache.org/guides/introduction/introduction-to-the-pom.html</a></p>
+<p>A Project Object Model or POM is the fundamental unit of work in Maven. It is an XML file that contains information about the project and configuration details used by Maven to build the project. It contains default values for most projects. Examples for this is the build directory, which is target; the source directory, which is src/main/java; the test source directory, which is src/test/java; and so on. When executing a task or goal, Maven looks for the POM in the current directory. It reads the POM, gets the needed configuration information, then executes the goal.</p>
+<h2 id="Super-POM"><a href="#Super-POM" class="headerlink" title="Super POM"></a>Super POM</h2><p>The Super POM is Maven’s default POM. All POMs extend the Super POM unless explicitly set, meaning the configuration specified in the Super POM is inherited by the POMs you created for your projects.</p>
+<p>You can see the Super POM for <a target="_blank" rel="noopener" href="https://maven.apache.org/ref/3.6.3/maven-model-builder/super-pom.html">Maven 3.6.3</a> in Maven Core reference documentation.</p>
+<h2 id="Project-Aggregation"><a href="#Project-Aggregation" class="headerlink" title="Project Aggregation"></a>Project Aggregation</h2><p>Project Aggregation is similar to Project Inheritance. But instead of specifying the parent POM from the module, it specifies the modules from the parent POM. By doing so, the parent project now knows its modules, and if a Maven command is invoked against the parent project, that Maven command will then be executed to the parent’s modules as well. To do Project Aggregation, you must do the following:</p>
+<p>Change the parent POMs packaging to the value “pom”.<br>Specify in the parent POM the directories of its modules (children POMs).</p>
+<h2 id="Project-Interpolation-and-Variables"><a href="#Project-Interpolation-and-Variables" class="headerlink" title="Project Interpolation and Variables"></a>Project Interpolation and Variables</h2><p>One of the practices that Maven encourages is <em>don’t repeat yourself</em>. However, there are circumstances where you will need to use the same value in several different locations. To assist in ensuring the value is only specified once, Maven allows you to use both your own and pre-defined variables in the POM.</p>
+<h3 id="Project-Variables"><a href="#Project-Variables" class="headerlink" title="Project Variables"></a>Project Variables</h3><p>For example, to access the <code>project.version</code> variable, you would reference it like so:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;project.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>One factor to note is that these variables are processed after inheritance as outlined above. This means that if a parent project uses a variable, then its definition in the child, not the parent, will be the one eventually used.</p>
+<h3 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h3><p>You are also able to reference any properties defined in the project as a variable. Consider the following example:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">log4j2.version</span>&gt;</span>2.17.1<span class="tag">&lt;/<span class="name">log4j2.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--slf4j =&gt; log4j2--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-slf4j-impl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;log4j2.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Dependency-Mechanism"><a href="#Dependency-Mechanism" class="headerlink" title="Dependency Mechanism"></a>Dependency Mechanism</h1><p><a target="_blank" rel="noopener" href="https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html">https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html</a></p>
+<h2 id="Transitive-Dependencies"><a href="#Transitive-Dependencies" class="headerlink" title="Transitive Dependencies"></a>Transitive Dependencies</h2><p>Maven avoids the need to discover and specify all the libraries.<br>You only needs to specify root dependencies, while all underlying dependencies will be included as transitive dependencies automatically.</p>
+<h3 id="Dependency-Mediation"><a href="#Dependency-Mediation" class="headerlink" title="Dependency Mediation"></a>Dependency Mediation</h3><p>Maven defines several rules to determines what version of an artifact will be chosen when multiple versions are encountered as dependencies.</p>
+<h4 id="Rule1-Nearest-definition"><a href="#Rule1-Nearest-definition" class="headerlink" title="Rule1 - Nearest definition"></a>Rule1 - Nearest definition</h4><p>Use versions of the closest dependency in project’s dependency tree.</p>
+<p>You can always guarantee a version by declaring it explicitly in your project’s POM.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">D&#x3D;1.0 since A&#x3D;&gt;E&#x3D;&gt;D1.0 is nearest.</span><br><span class="line"> A</span><br><span class="line"> ├── B</span><br><span class="line"> │   └── C</span><br><span class="line"> │       └── D 2.0</span><br><span class="line"> └── E</span><br><span class="line">     └── D 1.0</span><br><span class="line">D&#x3D;2.0 since explicitly declaring in root.</span><br><span class="line"> A</span><br><span class="line"> ├── B</span><br><span class="line"> │   └── C</span><br><span class="line"> │       └── D 2.0</span><br><span class="line"> ├── E</span><br><span class="line"> │   └── D 1.0</span><br><span class="line"> │</span><br><span class="line"> └── D 2.0</span><br></pre></td></tr></table></figure>
+
+<h4 id="Rule2-First-declaration-wins"><a href="#Rule2-First-declaration-wins" class="headerlink" title="Rule2 - First declaration wins"></a>Rule2 - First declaration wins</h4><p>If two dependency versions are at the same depth in the dependency tree, the first declaration wins.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">D&#x3D;1.0 since A&#x3D;&gt;B&#x3D;&gt;D(1.0) declares first.</span><br><span class="line"> A</span><br><span class="line"> ├── B</span><br><span class="line"> │   └── D 1.0</span><br><span class="line"> └── E</span><br><span class="line">     └── D 2.0</span><br></pre></td></tr></table></figure>
+
+<h4 id="Tip1-Always-specify-the-dependencies-that-source-code-uses-directly"><a href="#Tip1-Always-specify-the-dependencies-that-source-code-uses-directly" class="headerlink" title="Tip1 - Always specify the dependencies that source code uses directly"></a>Tip1 - Always specify the dependencies that source code uses directly</h4><p>This is especially useful when you want to upgrade other dependencies which also has this dependency.</p>
+<h2 id="Dependency-Scope"><a href="#Dependency-Scope" class="headerlink" title="Dependency Scope"></a>Dependency Scope</h2><p>Dependency scope is used to limit the transitivity of a dependency and to determine when a dependency is included in a classpath.</p>
+<table>
+<thead>
+<tr>
+<th>scope</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>compile</code></td>
+<td>This is the default scope, used if none is specified. Compile dependencies are available in all classpaths of a project. Furthermore, those dependencies are propagated to dependent projects.</td>
+</tr>
+<tr>
+<td><code>provided</code></td>
+<td>This is much like compile, but indicates you expect the JDK or a container to provide the dependency at runtime. For example, when building a web application for the Java Enterprise Edition, you would set the dependency on the Servlet API and related Java EE APIs to scope provided because the web container provides those classes. A dependency with this scope is added to the classpath used for compilation and test, but not the runtime classpath. It is not transitive.</td>
+</tr>
+<tr>
+<td><code>runtime</code></td>
+<td>This scope indicates that the dependency is not required for compilation, but is for execution. Maven includes a dependency with this scope in the runtime and test classpaths, but not the compile classpath.</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>This scope indicates that the dependency is not required for normal use of the application, and is only available for the test compilation and execution phases. This scope is not transitive. Typically this scope is used for test libraries such as JUnit and Mockito. It is also used for non-test libraries such as Apache Commons IO if those libraries are used in unit tests (src/test/java) but not in the model code (src/main/java).</td>
+</tr>
+<tr>
+<td><code>system</code></td>
+<td>This scope is similar to provided except that you have to provide the JAR which contains it explicitly. The artifact is always available and is not looked up in a repository.</td>
+</tr>
+<tr>
+<td><code>import</code></td>
+<td>This scope is only supported on a dependency of type pom in the <code>&lt;dependencyManagement&gt;</code> section. It indicates the dependency is to be replaced with the effective list of dependencies in the specified POM’s <code>&lt;dependencyManagement&gt;</code> section. Since they are replaced, dependencies with a scope of import do not actually participate in limiting the transitivity of a dependency.</td>
+</tr>
+</tbody></table>
+<h3 id="Scopes-for-transitive-dependency"><a href="#Scopes-for-transitive-dependency" class="headerlink" title="Scopes for transitive dependency"></a>Scopes for transitive dependency</h3><p>Each of the scopes (except for <code>import</code>) affects transitive dependencies in different ways, as is demonstrated in the table below. If a dependency is set to the scope in the left column, a transitive dependency of that dependency with the scope across the top row results in a dependency in the main project with the scope listed at the intersection. If no scope is listed, it means the dependency is omitted.</p>
+<table>
+<thead>
+<tr>
+<th>scope\scope</th>
+<th>compile</th>
+<th>test</th>
+<th>provided</th>
+<th>runtime</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>compile</td>
+<td>compile</td>
+<td>-</td>
+<td>-</td>
+<td>runtime</td>
+</tr>
+<tr>
+<td>test</td>
+<td>test</td>
+<td>-</td>
+<td>-</td>
+<td>test</td>
+</tr>
+<tr>
+<td>provided</td>
+<td>provided</td>
+<td>-</td>
+<td>provided</td>
+<td>provided</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>runtime</td>
+<td>-</td>
+<td>-</td>
+<td>runtime</td>
+</tr>
+</tbody></table>
+<h2 id="Dependency-Management"><a href="#Dependency-Management" class="headerlink" title="Dependency Management"></a>Dependency Management</h2><p>Authors can directly specify versions of artifacts when they are encountered in transitive dependencies or in dependencies where no version has been specified.</p>
+<p>The <code>&lt;dependencyManagement&gt;</code> is often used in root pom for multi-module maven project.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-a<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-c<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>excluded-artifact<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-c<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Dependency-Exclusion"><a href="#Dependency-Exclusion" class="headerlink" title="Dependency Exclusion"></a>Dependency Exclusion</h2><p>Since Maven resolves dependencies transitively, it is possible for unwanted dependencies to be included in your project’s classpath.<br>For example</p>
+<ul>
+<li>a certain older jar may have security issues</li>
+<li>or be incompatible with the Java version you’re using</li>
+<li>dependency with similiar and exclusive functionality, like <code>junit</code> and <code>testng</code></li>
+</ul>
+<p>To address this, Maven allows you to exclude specific dependencies. Exclusions are set on a specific dependency in your POM, and are targeted at a specific groupId and artifactId. When you build your project, that artifact will not be added to your project’s classpath by way of the dependency in which the exclusion was declared.</p>
+<h3 id="How-to-use-dependency-exclusions"><a href="#How-to-use-dependency-exclusions" class="headerlink" title="How to use dependency exclusions"></a>How to use dependency exclusions</h3><p>Add an <code>&lt;exclusions&gt;</code> element in the <code>&lt;dependency&gt;</code> element by which the problematic jar is included.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>sample.ProjectA<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>Project-A<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span>  <span class="comment">&lt;!-- declare the exclusion here --&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>sample.ProjectB<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>Project-B<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Maven-Dependency-Tools"><a href="#Maven-Dependency-Tools" class="headerlink" title="Maven Dependency Tools"></a>Maven Dependency Tools</h2><h3 id="mvn-command"><a href="#mvn-command" class="headerlink" title="mvn command"></a><code>mvn</code> command</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn dependency:tree</span><br></pre></td></tr></table></figure>
+
+<h3 id="Maven-Helper"><a href="#Maven-Helper" class="headerlink" title="Maven Helper"></a>Maven Helper</h3><p><a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/7179-maven-helper">Maven Helper</a> is a useful IDEA plugin which can present maven dependency tree in UI.</p>
+<p><img src="maven_helper_plugin.png" alt="Maven Helper"></p>
+<h1 id="Build-Lifecycle"><a href="#Build-Lifecycle" class="headerlink" title="Build Lifecycle"></a>Build Lifecycle</h1><p><a target="_blank" rel="noopener" href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html</a></p>
+<p>Maven is based around the central concept of a build lifecycle.</p>
+<p>There are three built-in build lifecycles: <code>default</code>, <code>clean</code> and <code>site</code>.</p>
+<ul>
+<li>The <code>default</code> lifecycle handles your project deployment</li>
+<li>The <code>clean</code> lifecycle handles project cleaning</li>
+<li>While the <code>site</code> lifecycle handles the creation of your project’s web site.</li>
+</ul>
+<h2 id="Clean-Lifecycle"><a href="#Clean-Lifecycle" class="headerlink" title="Clean Lifecycle"></a>Clean Lifecycle</h2><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pre-clean</td>
+<td>execute processes needed prior to the actual project cleaning</td>
+</tr>
+<tr>
+<td>clean</td>
+<td>remove all files generated by the previous build</td>
+</tr>
+<tr>
+<td>post-clean</td>
+<td>execute processes needed to finalize the project cleaning</td>
+</tr>
+</tbody></table>
+<h2 id="Default-LifeCycle"><a href="#Default-LifeCycle" class="headerlink" title="Default LifeCycle"></a>Default LifeCycle</h2><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>validate</td>
+<td>validate the project is correct and all necessary information is available.</td>
+</tr>
+<tr>
+<td>initialize</td>
+<td>initialize build state, e.g. set properties or create directories.</td>
+</tr>
+<tr>
+<td>generate-sources</td>
+<td>generate any source code for inclusion in compilation.</td>
+</tr>
+<tr>
+<td>process-sources</td>
+<td>process the source code, for example to filter any values.</td>
+</tr>
+<tr>
+<td>generate-resources</td>
+<td>generate resources for inclusion in the package.</td>
+</tr>
+<tr>
+<td>process-resources</td>
+<td>copy and process the resources into the destination directory, ready for packaging.</td>
+</tr>
+<tr>
+<td>compile</td>
+<td>compile the source code of the project.</td>
+</tr>
+<tr>
+<td>process-classes</td>
+<td>post-process the generated files from compilation, for example to do bytecode enhancement on Java classes.</td>
+</tr>
+<tr>
+<td>generate-test-sources</td>
+<td>generate any test source code for inclusion in compilation.</td>
+</tr>
+<tr>
+<td>process-test-sources</td>
+<td>process the test source code, for example to filter any values.</td>
+</tr>
+<tr>
+<td>generate-test-resources</td>
+<td>create resources for testing.</td>
+</tr>
+<tr>
+<td>process-test-resources</td>
+<td>copy and process the resources into the test destination directory.</td>
+</tr>
+<tr>
+<td>test-compile</td>
+<td>compile the test source code into the test destination directory</td>
+</tr>
+<tr>
+<td>process-test-classes</td>
+<td>post-process the generated files from test compilation, for example to do bytecode enhancement on Java classes.</td>
+</tr>
+<tr>
+<td>test</td>
+<td>run tests using a suitable unit testing framework. These tests should not require the code be packaged or deployed.</td>
+</tr>
+<tr>
+<td>prepare-package</td>
+<td>perform any operations necessary to prepare a package before the actual packaging. This often results in an unpacked, processed version of the package.</td>
+</tr>
+<tr>
+<td>package</td>
+<td>take the compiled code and package it in its distributable format, such as a JAR.</td>
+</tr>
+<tr>
+<td>pre-integration-test</td>
+<td>perform actions required before integration tests are executed. This may involve things such as setting up the required environment.</td>
+</tr>
+<tr>
+<td>integration-test</td>
+<td>process and deploy the package if necessary into an environment where integration tests can be run.</td>
+</tr>
+<tr>
+<td>post-integration-test</td>
+<td>perform actions required after integration tests have been executed. This may including cleaning up the environment.</td>
+</tr>
+<tr>
+<td>verify</td>
+<td>run any checks to verify the package is valid and meets quality criteria.</td>
+</tr>
+<tr>
+<td>install</td>
+<td>install the package into the local repository, for use as a dependency in other projects locally.</td>
+</tr>
+<tr>
+<td>deploy</td>
+<td>done in an integration or release environment, copies the final package to the remote repository for sharing with other developers and projects.</td>
+</tr>
+</tbody></table>
+<h2 id="Site-Lifecycle"><a href="#Site-Lifecycle" class="headerlink" title="Site Lifecycle"></a>Site Lifecycle</h2><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Description</th>
+<th>Phase Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pre-site</td>
+<td>execute processes needed prior to the actual project site generation</td>
+<td></td>
+</tr>
+<tr>
+<td>site</td>
+<td>generate the project’s site documentation</td>
+<td></td>
+</tr>
+<tr>
+<td>post-site</td>
+<td>execute processes needed to finalize the site generation, and to prepare for site deployment</td>
+<td></td>
+</tr>
+<tr>
+<td>site-deploy</td>
+<td>deploy the generated site documentation to the specified web server</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="mvn-command-line-with-lifecycle"><a href="#mvn-command-line-with-lifecycle" class="headerlink" title="mvn command line with lifecycle"></a><code>mvn</code> command line with lifecycle</h2><ul>
+<li><code>mvn verify</code> means to run each phases defined in <code>default</code> lifecycle until <code>verify</code>.</li>
+<li><code>mvn clean deploy</code> means to first run each phases defined in <code>clean</code> lifecycle until <code>clean</code>, then run each phases defined in <code>default</code> lifecycle until <code>deploy</code>.</li>
+</ul>
+<h2 id="Build-phase-is-made-up-of-plugin-goals"><a href="#Build-phase-is-made-up-of-plugin-goals" class="headerlink" title="Build phase is made up of plugin goals"></a>Build phase is made up of plugin goals</h2><p>Each build phase can bind to 1+ plugin goals, which means you are running different plugin goals when you run build phase.<br>Maven has a lot of built-in defined plugin goals and they are binding to corresponding build phase.</p>
+<p>As below command shows, build phase is finally converted as list of plugin goals running in sequence.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean dependency:copy-dependencies package</span><br></pre></td></tr></table></figure>
+
+<h1 id="Repository-Management"><a href="#Repository-Management" class="headerlink" title="Repository Management"></a>Repository Management</h1><p><a target="_blank" rel="noopener" href="https://maven.apache.org/guides/introduction/introduction-to-repositories.html">https://maven.apache.org/guides/introduction/introduction-to-repositories.html</a></p>
+<p>A repository in Maven holds build artifacts and dependencies of varying types.</p>
+<p>With Repositories you specify from which locations you want to download certain artifacts, such as dependencies and maven-plugins. Repositories can be declared inside a project, which means that if you have your own custom repositories, those sharing your project easily get the right settings out of the box. However, you may want to use an alternative mirror for a particular repository without changing the project files.</p>
+<h2 id="Best-Practice-Use-Mirrors-for-Repositories"><a href="#Best-Practice-Use-Mirrors-for-Repositories" class="headerlink" title="Best Practice - Use Mirrors for Repositories"></a>Best Practice - Use Mirrors for Repositories</h2><p>Some reasons to use a mirror are:</p>
+<ul>
+<li>There is a synchronized mirror on the internet that is geographically closer and faster</li>
+<li>You want to replace a particular repository with your own internal repository which you have greater control over</li>
+<li>You want to run a repository manager to provide a local cache to a mirror and need to use its URL instead</li>
+</ul>
+<p>To configure a mirror of a given repository, you provide it in your settings file (<code>$&#123;user.home&#125;/.m2/settings.xml</code>), giving the new repository its own id and url, and specify the mirrorOf setting that is the ID of the repository you are using a mirror of. For example, the ID of the main Maven Central repository included by default is central, so to use the different mirror instance, you would configure the following:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">mirrors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>other-mirror<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>Other Mirror Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>https://other-mirror.repo.other-company.com/maven2<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mirrors</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Profiles"><a href="#Profiles" class="headerlink" title="Profiles"></a>Profiles</h1><p><a target="_blank" rel="noopener" href="https://maven.apache.org/guides/introduction/introduction-to-profiles.html">https://maven.apache.org/guides/introduction/introduction-to-profiles.html</a></p>
+<blockquote>
+<p>[!Tip]<br>Profiles are set of properties trigger by conditions.</p>
+</blockquote>
+<p>There are different types of Profile in different places</p>
+<ul>
+<li>Per Project<ul>
+<li>Defined in the POM itself (<code>pom.xml</code>).</li>
+</ul>
+</li>
+<li>Per User<ul>
+<li>Defined in the Maven-settings (<code>%USER_HOME%/.m2/settings.xml</code>).</li>
+</ul>
+</li>
+<li>Global<ul>
+<li>Defined in the global Maven-settings (<code>$&#123;maven.home&#125;/conf/settings.xml</code>).</li>
+</ul>
+</li>
+</ul>
+<h2 id="Activate-Profile"><a href="#Activate-Profile" class="headerlink" title="Activate Profile"></a>Activate Profile</h2><p>A profile can be activated in several ways:</p>
+<ul>
+<li><p>From the command line</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mvn groupId:artifactId:goal -P profile-1,profile-2,?profile-3</span><br><span class="line">mvn groupId:artifactId:goal -P !profile-1,!profile-2,!?profile-3</span><br></pre></td></tr></table></figure></li>
+<li><p>Through Maven settings</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>profile-1<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Based on environment variables</p>
+</li>
+<li><p>OS settings</p>
+</li>
+<li><p>Present or missing files</p>
+</li>
+</ul>
+<h2 id="Profile-Order"><a href="#Profile-Order" class="headerlink" title="Profile Order"></a>Profile Order</h2><p>All profile elements in a POM from active profiles overwrite the global elements with the same name of the POM or extend those in case of collections. In case multiple profiles are active in the same POM or external file, the ones which are defined later take precedence over the ones defined earlier (independent of their profile id and activation order).</p>
+<p>Below POM leads to repository as <code>profile-2-repo</code>, <code>profile-1-repo</code>, <code>global-repo</code>.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>global-repo<span class="tag">&lt;/<span class="name">id</span>&gt;</span>\</span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>profile-1<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">id</span>&gt;</span>profile-1-repo<span class="tag">&lt;/<span class="name">id</span>&gt;</span>\</span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>profile-2<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">id</span>&gt;</span>profile-2-repo<span class="tag">&lt;/<span class="name">id</span>&gt;</span>\</span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://learning.oreilly.com/library/view/maven-the-definitive/9780596517335/">Maven Definition Guide</a></li>
+<li><a target="_blank" rel="noopener" href="https://learning.oreilly.com/library/view/apache-maven-cookbook/9781785286124/">Maven Cookbook</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/TIM168/technical_books/blob/master/Java/Maven%E5%AE%9E%E6%88%98.pdf">Maven in Action (Chinese)</a></li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>sonnyhcl
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://sonnyhcl.com/how-maven-works/" title="How Maven Works">https://sonnyhcl.com/how-maven-works/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/maven/" rel="tag"><i class="fa fa-tag"></i> maven</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/test-driven-develop/" rel="prev" title="Test Driven Delelop">
+                  <i class="fa fa-chevron-left"></i> Test Driven Delelop
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sonnyhcl</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">64k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">58 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://sonnyhcl-github-page.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://sonnyhcl.com/how-maven-works/";
+    this.page.identifier = "how-maven-works/";
+    this.page.title = "How Maven Works";
+    };
+  NexT.utils.loadComments('#disqus_thread', () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://sonnyhcl-github-page.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
